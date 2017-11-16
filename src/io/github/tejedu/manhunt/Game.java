@@ -163,7 +163,7 @@ public class Game
                            Material.DIAMOND_HELMET, Material.DIAMOND_LEGGINGS, Material.DIAMOND_PICKAXE, Material.DIAMOND_SPADE,
                            Material.DIAMOND_SWORD };
         ItemStack item;
-        ItemStack item; if (new Random().nextInt(100) > this.plugin.getConfig().getInt("prizes.enchrate")) {
+        if (new Random().nextInt(100) > this.plugin.getConfig().getInt("prizes.enchrate")) {
             Material material = materialList[new Random().nextInt(materialList.length)];
             item = randomAmount(material);
         } else {
@@ -220,7 +220,7 @@ public class Game
         prizeName = b.toString();
         int prizeAmount = prize.getAmount();
 
-        Bukkit.broadcastMessage(this.plugin.highlightColor + ChatColor.ITALIC + capturer.getDisplayName() +
+        Bukkit.broadcastMessage("" + this.plugin.highlightColor + ChatColor.ITALIC + capturer.getDisplayName() +
                     ChatColor.RESET + " captured " + this.plugin.highlightColor + ChatColor.ITALIC + this.target.getDisplayName() +
                     ChatColor.RESET + " and won " + prizeAmount + " " + prizeName + "!");
 
@@ -249,7 +249,7 @@ public class Game
             prizeName = b.toString();
             int prizeAmount = prize.getAmount();
 
-            Bukkit.broadcastMessage(this.plugin.highlightColor + ChatColor.ITALIC + this.target.getDisplayName() +
+            Bukkit.broadcastMessage("" + this.plugin.highlightColor + ChatColor.ITALIC + this.target.getDisplayName() +
                         ChatColor.RESET + " survived and won " + prizeAmount + " " + prizeName + "!");
 
 

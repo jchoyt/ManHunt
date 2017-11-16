@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<project name="ManHunt" default="jar" basedir=".">
+    <property name="src" value="./src" />
+    <property name="build" value="./build" />
+    <property name="doc" value="./doc" />
+    <property name="jarfile" value="${ant.project.name}.jar" />
+    <property name="build.compiler" value="modern" />
+    <property name="lib" value="lib"/>
+    <dirname property="antfile.dir" file="${ant.file}"/>
+
+    <path id="jarspath">
+        <fileset dir="${lib}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="init">
+        <tstamp />
+        <mkdir dir="${build}" />
+        <mkdir dir="${build}/images" />
+        <echo message="Build file: ${DSTAMP}, ${TSTAMP}" />
+        <echo message="${jarspath}"></echo>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src}" destdir="${build}" deprecation="on" debug="on" description="Compile the java code from ${src} into ${build}">
+            <include name="**/*.java" />
+            <classpath>
+                <path refid="jarspath" />
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar jarfile="${jarfile}" basedir="${build}" description="rebuild the jarfile">
+            <manifest>
+                <attribute name="Built-By" value="${user.name}"/>
+                <!-- <attribute name="Main-Class" value="nexusbot.NexusBot"/> -->
+                <attribute name="Built-Date" value="${DSTAMP}, ${TSTAMP}"/>
+                <!-- <attribute name="Class-Path" value="lib/pircbot.jar lib/postgresql-8.3-603.jdbc3.jar"/> -->
+            </manifest>
+        </jar>
+     </target>
+
+    <target name="clean" description="Delete the build and javadoc directory trees and the ${jarfile}">
+        <delete dir="${doc}" />
+        <delete dir="${build}" />
+        <delete file="${jarfile}" />
+        <delete dir="${antfile.dir}">
+            <include name="*.tar"/>
+            <include name="*.gz"/>
+        </delete>
+    </target>
+
+</project>
