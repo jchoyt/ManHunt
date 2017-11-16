@@ -1,0 +1,29 @@
+name: ManHunt
+description: A game of ManHunt with prizes!
+main: io.github.tejedu.manhunt.ManHunt
+version: 0.2.0
+author: "github: tejedu, minecraft: aeae"
+website: http://tejedu.github.io/
+prefix: "Man Hunt"
+
+commands:
+  mh:
+    description: Used to verify whether a target is AFK
+    usage: "Usage: /mh"
+    permission: manhunt.basic
+  mhtarget:
+    description: Returns the target of the current round of ManHunt
+    usage: "Usage: /mhtarget"
+    permission: manhunt.basic
+  mhstart:
+    description: Starts the game after a delay
+    usage: "Usage: /mhstart [time_in_seconds]"
+    permission: manhunt.admin
+
+permissions:
+  manhunt.basic:
+    description: Gives access to play ManHunt
+    default: true
+  manhunt.admin:
+    description: Gives access to admin controls
+    default: op

@@ -1,0 +1,25 @@
+#       :)                                               #
+#                                                        #
+#                        Man Hunt                        #
+#                                        :)              #
+#                                                        #
+
+preferences:
+  # Colour of names in the chat (0-9 & a-f)
+  chathighlight: d
+round:
+  # Minimum players online to start a round
+  minplayers: 2
+  
+  # Time from round end to next round start
+  delay: 150
+  
+  # Time before the target earns their survival prize
+  maxlength: 900
+  
+  # Only survival players can play
+  survivalplayersonly: true
+  
+prizes:
+  # % of prizes that will be enchanted items
+  enchrate: 50
