@@ -93,7 +93,14 @@ public class Game
     }
 
     private ItemStack randomAmount(Material material) {
-        return new ItemStack(material, 1 + new Random().nextInt(material.getMaxStackSize()));
+        int limitInt = -1;
+        Integer limit = Prizes.prizeLimits.get(material);
+        if(limit == null) {
+            limitInt = material.getMaxStackSize();
+        } else {
+            limitInt = limit;
+        }
+        return new ItemStack(material, 1 + new Random().nextInt(limitInt));
     }
 
     private ItemStack randomEnchantment(ItemStack item) {

@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Prizes
 {
@@ -23,7 +25,6 @@ public class Prizes
         Material.ARROW,
         Material.BAKED_POTATO,
         Material.BANNER,
-        Material.BEACON,
         Material.BED,
         Material.BEETROOT_SEEDS,
         Material.BEETROOT_SOUP,
@@ -53,12 +54,11 @@ public class Prizes
         Material.BROWN_MUSHROOM,
         Material.BUCKET,
         Material.CACTUS,
-        Material.CAKE_BLOCK,
         Material.CAKE,
         Material.CARPET,
         Material.CARROT_STICK,
-        Material.CARROT,
-        Material.CAULDRON,
+        Material.CARROT_ITEM,
+        Material.CAULDRON_ITEM,
         Material.CHAINMAIL_BOOTS,
         Material.CHAINMAIL_CHESTPLATE,
         Material.CHAINMAIL_HELMET,
@@ -83,7 +83,6 @@ public class Prizes
         Material.COOKED_MUTTON,
         Material.COOKED_RABBIT,
         Material.COOKIE,
-        Material.CROPS,
         Material.CYAN_GLAZED_TERRACOTTA,
         Material.DARK_OAK_DOOR_ITEM,
         Material.DARK_OAK_FENCE_GATE,
@@ -109,7 +108,6 @@ public class Prizes
         Material.DIRT,
         Material.DISPENSER,
         Material.DOUBLE_PLANT,
-        Material.DRAGONS_BREATH,
         Material.DROPPER,
         Material.EGG,
         Material.EMERALD_BLOCK,
@@ -132,7 +130,6 @@ public class Prizes
         Material.FLINT_AND_STEEL,
         Material.FLINT,
         Material.FLOWER_POT_ITEM,
-        Material.FLOWER_POT,
         Material.FURNACE,
         Material.GLASS_BOTTLE,
         Material.GLASS,
@@ -224,7 +221,6 @@ public class Prizes
         Material.MUTTON,
         Material.MYCEL,
         Material.NAME_TAG,
-        Material.NETHER_STAR,
         Material.NOTE_BLOCK,
         Material.OBSIDIAN,
         Material.ORANGE_GLAZED_TERRACOTTA,
@@ -235,7 +231,7 @@ public class Prizes
         Material.PISTON_STICKY_BASE,
         Material.POISONOUS_POTATO,
         Material.PORK,
-        Material.POTATO,
+        Material.POTATO_ITEM,
         Material.POWERED_MINECART,
         Material.POWERED_RAIL,
         Material.PRISMARINE_CRYSTALS,
@@ -269,11 +265,9 @@ public class Prizes
         Material.RED_SANDSTONE_STAIRS,
         Material.RED_SANDSTONE,
         Material.REDSTONE_BLOCK,
-        Material.REDSTONE_COMPARATOR_OFF,
         Material.REDSTONE_COMPARATOR,
         Material.REDSTONE_LAMP_OFF,
         Material.REDSTONE_ORE,
-        Material.REDSTONE_TORCH_OFF,
         Material.REDSTONE,
         Material.ROTTEN_FLESH,
         Material.SADDLE,
@@ -287,7 +281,7 @@ public class Prizes
         Material.SHIELD,
         Material.SIGN,
         Material.SILVER_GLAZED_TERRACOTTA,
-        Material.SKULL,
+        Material.SKULL_ITEM,
         Material.SLIME_BALL,
         Material.SLIME_BLOCK,
         Material.SMOOTH_BRICK,
@@ -352,6 +346,7 @@ public class Prizes
         Material.YELLOW_GLAZED_TERRACOTTA );
 
     public static List<Material> netherPrizes = (List<Material>)Arrays.asList(
+        Material.BEACON,
         Material.BLAZE_POWDER,
         Material.BLAZE_ROD,
         Material.BREWING_STAND_ITEM,
@@ -365,6 +360,7 @@ public class Prizes
         Material.NETHER_BRICK,
         Material.NETHER_FENCE,
         Material.NETHER_STALK,
+        Material.NETHER_STAR,
         Material.NETHER_WART_BLOCK,
         Material.NETHERRACK,
         Material.OBSERVER,
@@ -384,6 +380,7 @@ public class Prizes
         Material.CHORUS_FRUIT,
         Material.CHORUS_PLANT,
         Material.CYAN_SHULKER_BOX,
+        Material.DRAGONS_BREATH,
         Material.ELYTRA,
         Material.END_BRICKS,
         Material.END_CRYSTAL,
@@ -416,12 +413,14 @@ public class Prizes
         Material.BREWING_STAND,
         Material.BRICK,
         Material.BURNING_FURNACE,
-        Material.CARROT_ITEM,
-        Material.CAULDRON_ITEM,
+        Material.CAKE_BLOCK,
+        Material.CARROT,
+        Material.CAULDRON,
         Material.COMMAND_CHAIN,
         Material.COMMAND_MINECART,
         Material.COMMAND_REPEATING,
         Material.COMMAND,
+        Material.CROPS,
         Material.DAYLIGHT_DETECTOR_INVERTED,
         Material.DIODE_BLOCK_OFF,
         Material.DIODE_BLOCK_ON,
@@ -433,6 +432,7 @@ public class Prizes
         Material.ENDER_PORTAL_FRAME,
         Material.ENDER_PORTAL,
         Material.FIRE,
+        Material.FLOWER_POT,
         Material.FROSTED_ICE,
         Material.GLOWING_REDSTONE_ORE,
         Material.IRON_DOOR_BLOCK,
@@ -449,16 +449,18 @@ public class Prizes
         Material.PISTON_EXTENSION,
         Material.PISTON_MOVING_PIECE,
         Material.PORTAL,
-        Material.POTATO_ITEM,
+        Material.POTATO,
         Material.POTION,
         Material.PUMPKIN_STEM,
         Material.PURPUR_DOUBLE_SLAB,
+        Material.REDSTONE_COMPARATOR_OFF,
         Material.REDSTONE_COMPARATOR_ON,
         Material.REDSTONE_LAMP_ON,
+        Material.REDSTONE_TORCH_OFF,
         Material.REDSTONE_TORCH_ON,
         Material.REDSTONE_WIRE,
         Material.SIGN_POST,
-        Material.SKULL_ITEM,
+        Material.SKULL,
         Material.SPECTRAL_ARROW,
         Material.SPLASH_POTION,
         Material.STANDING_BANNER,
@@ -520,6 +522,23 @@ public class Prizes
         Material.WOOD_SPADE,
         Material.WOOD_SWORD,
     };
+
+    public static Map<Material, Integer> prizeLimits = new HashMap<Material, Integer>();
+
+    public static void setPrizeLimits() {
+        prizeLimits.put(Material.NETHER_STAR, 3);
+        prizeLimits.put(Material.BEACON, 3);
+        prizeLimits.put(Material.END_CRYSTAL, 3);
+        prizeLimits.put(Material.SKULL_ITEM, 5);
+        prizeLimits.put(Material.IRON_BLOCK, 32);
+        prizeLimits.put(Material.GOLD_BLOCK, 16);
+        prizeLimits.put(Material.DIAMOND_BLOCK, 8);
+        prizeLimits.put(Material.EMERALD_BLOCK, 8);
+        prizeLimits.put(Material.DIAMOND, 32);
+        prizeLimits.put(Material.DIAMOND_ORE, 16);
+        prizeLimits.put(Material.GOLDEN_APPLE, 5);
+        prizeLimits.put(Material.ENDER_CHEST, 8);
+    }
 }
 
 /* old prize List

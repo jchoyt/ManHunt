@@ -16,6 +16,7 @@ public class ManHunt extends org.bukkit.plugin.java.JavaPlugin
 
     public void onEnable()
     {
+        Prizes.setPrizeLimits();
         configuration();
         getServer().getPluginManager().registerEvents(new CaptureListener(this), this);
         this.highlightColor = ChatColor.getByChar(getConfig().getString("preferences.chathighlight").charAt(0));
