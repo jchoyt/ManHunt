@@ -34,8 +34,13 @@ public class Game
 
     public void setupNewGame()
     {
-        materialList.addAll(Prizes.overworldPrizes);
-        materialList.addAll(Prizes.netherPrizes);
+        if (this.plugin.getConfig().getBoolean("prizes.includeOverworld"))
+            materialList.addAll(Prizes.overworldPrizes);
+        if (this.plugin.getConfig().getBoolean("prizes.includeNether"))
+            materialList.addAll(Prizes.netherPrizes);
+        if (this.plugin.getConfig().getBoolean("prizes.includeEnd"))
+            materialList.addAll(Prizes.endPrizes);
+        // materialList.addAll(Prizes.unusedPrizes);
 
         List<Player> players = new ArrayList();
         for (Player player : this.plugin.getServer().getOnlinePlayers()) {
@@ -43,7 +48,6 @@ public class Game
                 if (this.plugin.getConfig().getBoolean("round.survivalplayersonly")) {
                     if (player.getGameMode() == GameMode.SURVIVAL)
                     {
-
                         players.add(player);
                     }
                 }
@@ -53,27 +57,21 @@ public class Game
             }
         }
 
-
-
         if (players.size() < this.plugin.getConfig().getInt("round.minplayers")) {
             this.plugin.queueGame();
             return;
         }
 
-
-
         Collections.shuffle(players);
         this.plugin.getServer()
         .broadcastMessage("Man Hunt has started! " + this.plugin.highlightColor + ChatColor.ITALIC +
-                  ((Player)players.get(0)).getDisplayName() + ChatColor.RESET +
-                  " is the target! Find and right-click them to earn a reward!");
+              ((Player)players.get(0)).getDisplayName() + ChatColor.RESET +
+              " is the target! Find and right-click them to earn a reward!");
         this.target = ((Player)players.get(0));
         this.targetVerified = false;
 
-
         this.target.sendMessage("In order to earn a prize for surviving enter " + this.plugin.highlightColor + "/mh" +
-                    ChatColor.RESET + " into the chat.");
-
+            ChatColor.RESET + " into the chat.");
 
         this.surviveTimer = new SurviveTimer(this.plugin).runTaskLater(this.plugin, 20 * this.plugin.getConfig().getInt("round.maxlength"));
     }
@@ -81,10 +79,10 @@ public class Game
     public ItemStack randomItemStack()
     {
         ItemStack item;
-        if (new Random().nextInt(100) > this.plugin.getConfig().getInt("prizes.enchrate")) {
+        if (new Random().nextInt(100) > this.plugin.getConfig().getInt("prizes.enchrate")) { //pick regular itme
             Material material = materialList.get(new Random().nextInt(materialList.size()));
             item = randomAmount(material);
-        } else {
+        } else { //create enchanted item
             Material material = Prizes.enchantableList[new Random().nextInt(Prizes.enchantableList.length)];
             item = new ItemStack(material, 1);
             item = randomEnchantment(item);
@@ -92,24 +90,27 @@ public class Game
         return item;
     }
 
+    /**
+        Amount is linear from 1 to max.  Max is defined by and entry in Prizes.prizeLimits or the stack size if no limit is specified.
+     */
     private ItemStack randomAmount(Material material) {
-        int limitInt = -1;
         Integer limit = Prizes.prizeLimits.get(material);
         if(limit == null) {
-            limitInt = material.getMaxStackSize();
-        } else {
-            limitInt = limit;
+            limit = material.getMaxStackSize();
         }
-        return new ItemStack(material, 1 + new Random().nextInt(limitInt));
+        return new ItemStack(material, 1 + new Random().nextInt(limit));
     }
 
     private ItemStack randomEnchantment(ItemStack item) {
         ArrayList<Enchantment> possibleEnchantments = new ArrayList();
         Enchantment[] arrayOfEnchantment;
-        int j = (arrayOfEnchantment = Enchantment.values()).length; for (int i = 0; i < j; i++) { Enchantment e = arrayOfEnchantment[i];
-                                                      if (e.canEnchantItem(item)) {
-                                                          possibleEnchantments.add(e);
-                                                      }}
+        int j = (arrayOfEnchantment = Enchantment.values()).length;
+        for (int i = 0; i < j; i++) {
+            Enchantment e = arrayOfEnchantment[i];
+            if (e.canEnchantItem(item)) {
+                possibleEnchantments.add(e);
+            }
+        }
 
         if (possibleEnchantments.size() > 0) {
             Collections.shuffle(possibleEnchantments);

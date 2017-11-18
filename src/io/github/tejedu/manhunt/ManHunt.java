@@ -29,9 +29,6 @@ public class ManHunt extends org.bukkit.plugin.java.JavaPlugin
         saveConfig();
     }
 
-
-
-
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
         if (cmd.getName().equalsIgnoreCase("mh")) {
