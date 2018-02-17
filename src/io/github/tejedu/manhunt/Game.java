@@ -25,6 +25,7 @@ public class Game
     public ManHunt plugin;
     public BukkitTask surviveTimer;
     private List<Material> materialList = new ArrayList<Material>();
+    public long roundEnd;
 
     public Game(JavaPlugin plugin)
     {
@@ -69,9 +70,11 @@ public class Game
               " is the target! Find and right-click them to earn a reward!");
         this.target = ((Player)players.get(0));
         this.targetVerified = false;
+        this.roundEnd = System.currentTimeMillis() + (1000L * this.plugin.getConfig().getInt("round.maxlength"));
 
-        this.target.sendMessage("In order to earn a prize for surviving enter " + this.plugin.highlightColor + "/mh" +
-            ChatColor.RESET + " into the chat.");
+        if(!this.plugin.getConfig().getBoolean("allowafk")) {
+            this.target.sendMessage("In order to earn a prize for surviving, enter " + this.plugin.highlightColor + "/mh" + ChatColor.RESET + " into the chat.");
+        }
 
         this.surviveTimer = new SurviveTimer(this.plugin).runTaskLater(this.plugin, 20 * this.plugin.getConfig().getInt("round.maxlength"));
     }
@@ -91,7 +94,7 @@ public class Game
     }
 
     /**
-        Amount is linear from 1 to max.  Max is defined by and entry in Prizes.prizeLimits or the stack size if no limit is specified.
+        Amount is linear from 1 to max.  Max is defined by an entry in Prizes.prizeLimits or the stack size if no limit is specified.
      */
     private ItemStack randomAmount(Material material) {
         Integer limit = Prizes.prizeLimits.get(material);
@@ -152,7 +155,6 @@ public class Game
 
 
         capturer.getInventory().addItem(new ItemStack[] { prize });
-
         this.plugin.queueGame();
     }
 
@@ -161,9 +163,7 @@ public class Game
         if (this.targetVerified || this.plugin.getConfig().getBoolean("dev.allowafk")) {
             this.target.sendMessage("You survived!");
 
-
             ItemStack prize = randomItemStack();
-
 
             String prizeName = prize.getType().name().replace("_", " ");
             StringBuilder b = new StringBuilder(prizeName);
@@ -178,7 +178,6 @@ public class Game
             Bukkit.broadcastMessage("" + this.plugin.highlightColor + ChatColor.ITALIC + this.target.getDisplayName() +
                         ChatColor.RESET + " survived and won " + prizeAmount + " " + prizeName + "!");
 
-
             this.target.getInventory().addItem(new ItemStack[] { prize });
         } else {
             this.target.sendMessage("You survived but did not verify that you were not AFK!");
@@ -192,4 +191,16 @@ public class Game
             this.surviveTimer.cancel();
         }
     }
+
+    public String getTimeLeft() {
+        long millisLeft = this.roundEnd - System.currentTimeMillis();
+        long minutesLeft = millisLeft / 1000L / 60L;
+        if(minutesLeft == 0) {
+            return "less than a minute";
+        } else if (minutesLeft == 1) {
+            return "about a minute"
+        }
+        return String.format("about %d minutes", minutesLeft);
+    }
+
 }

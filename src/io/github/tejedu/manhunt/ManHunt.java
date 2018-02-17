@@ -34,8 +34,7 @@ public class ManHunt extends org.bukkit.plugin.java.JavaPlugin
         if (cmd.getName().equalsIgnoreCase("mh")) {
             if (((sender instanceof Player)) && (this.game != null) && ((Player)sender == this.game.target)) {
                 this.game.targetVerified = true;
-                sender.sendMessage("If you survive for " + getConfig().getInt("round.maxlength") +
-                           " seconds you will recieve the prize!");
+                sender.sendMessage("If you survive for " + this.game.getTimeLeft() + ", you will recieve a prize!");
             }
             return true;
         }
@@ -43,7 +42,7 @@ public class ManHunt extends org.bukkit.plugin.java.JavaPlugin
         if (cmd.getName().equalsIgnoreCase("mhtarget")) {
             if ((this.game != null) && ((this.game.target instanceof Player))) {
                 sender.sendMessage("The target is " + this.highlightColor + ChatColor.ITALIC + this.game.target.getDisplayName() +
-                           ChatColor.RESET + "!");
+                           ChatColor.RESET + ". You have " + this.game.getTimeLeft() + " to find them!");
             } else {
                 sender.sendMessage("There is currently no target.");
             }
@@ -51,10 +50,12 @@ public class ManHunt extends org.bukkit.plugin.java.JavaPlugin
         }
 
         if (cmd.getName().equalsIgnoreCase("mhstart")) {
-            if ((args.length > 0) && (!args[0].replaceAll("[^0-9]", "").isEmpty())) {
-                queueGame(Integer.parseInt(args[0]));
-            } else {
-                queueGame();
+            if (sender.hasPermission("manhunt.admin")){
+                if ((args.length > 0) && (!args[0].replaceAll("[^0-9]", "").isEmpty())) {
+                    queueGame(Integer.parseInt(args[0]));
+                } else {
+                    queueGame();
+                }
             }
         }
         return true;
