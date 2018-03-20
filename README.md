@@ -9,6 +9,9 @@ Version history
     * Skulls will be awarded, but they are always skeleton skulls. Talk to staff to get those swapped out for your chosen type.
 * v1.1.1
     * /mhtarget will tell you who the current huntee is and how long you have to find them
+* v1.1.2
+    * Enchanted prizes can have more than one enchantment on them.
+    *
 
 Possible further enhancements:
 * actual potions

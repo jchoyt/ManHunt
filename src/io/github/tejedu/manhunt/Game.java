@@ -82,7 +82,7 @@ public class Game
     public ItemStack randomItemStack()
     {
         ItemStack item;
-        if (new Random().nextInt(100) > this.plugin.getConfig().getInt("prizes.enchrate")) { //pick regular itme
+        if (new Random().nextInt(100) > this.plugin.getConfig().getInt("prizes.enchrate")) { //pick regular item
             Material material = materialList.get(new Random().nextInt(materialList.size()));
             item = randomAmount(material);
         } else { //create enchanted item
@@ -116,9 +116,16 @@ public class Game
         }
 
         if (possibleEnchantments.size() > 0) {
-            Collections.shuffle(possibleEnchantments);
-            Enchantment enchantment = (Enchantment)possibleEnchantments.get(0);
-            item.addEnchantment(enchantment, 1 + (int)(Math.random() * (enchantment.getMaxLevel() - 1 + 1)));
+            // add one or more enchantments
+            int anotherEnchant = 75;
+            while(anotherEnchant > 0) {
+                Collections.shuffle(possibleEnchantments);
+                Enchantment enchantment = (Enchantment)possibleEnchantments.get(0);
+                // don't double up enchantments
+                if(!item.containsEnchantment(enchantment)) {
+                    item.addEnchantment(enchantment, 1 + (int)(Math.random() * (enchantment.getMaxLevel() - 1 + 1)));
+                    anotherEnchant = anotherEnchant - (int)(Math.random() * 100);}
+            }
         }
 
         return item;
@@ -195,10 +202,10 @@ public class Game
     public String getTimeLeft() {
         long millisLeft = this.roundEnd - System.currentTimeMillis();
         long minutesLeft = millisLeft / 1000L / 60L;
-        if(minutesLeft == 0) {
+        if(minutesLeft < 1) {
             return "less than a minute";
-        } else if (minutesLeft == 1) {
-            return "about a minute"
+        } else if (minutesLeft < 2) {
+            return "about a minute";
         }
         return String.format("about %d minutes", minutesLeft);
     }
