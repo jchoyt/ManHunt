@@ -12,10 +12,11 @@ Version history
 * v1.1.2
     * Enchanted prizes can have more than one enchantment on them.
     * Potions and splash potions have effects
+* v1.1.2.1
+    * Added more potion entries to the prize list - one for each potion type
+    * [Bug] - didn't have potions in a used list
 
 Possible further enhancements:
-* actual potions
 * actual enchanted books
-* multiple enchants on items
 * dyes (intercept "INK_SAC" and turn it  into a different type of dye)
 * if inventory is full, drop the stack at the player's feet
