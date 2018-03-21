@@ -11,7 +11,7 @@ Version history
     * /mhtarget will tell you who the current huntee is and how long you have to find them
 * v1.1.2
     * Enchanted prizes can have more than one enchantment on them.
-    *
+    * Potions and splash potions have effects
 
 Possible further enhancements:
 * actual potions
