@@ -3,8 +3,10 @@ package io.github.tejedu.manhunt;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -15,7 +17,10 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitTask;
 
 public class Game
@@ -26,9 +31,16 @@ public class Game
     public BukkitTask surviveTimer;
     private List<Material> materialList = new ArrayList<Material>();
     public long roundEnd;
+    private Random random = new Random();
+    private Set<PotionType> fakePotions = new HashSet<PotionType>();
 
     public Game(JavaPlugin plugin)
     {
+        fakePotions.add(PotionType.AWKWARD);
+        fakePotions.add(PotionType.MUNDANE);
+        fakePotions.add(PotionType.THICK);
+        fakePotions.add(PotionType.UNCRAFTABLE);
+        fakePotions.add(PotionType.WATER);
         this.plugin = ((ManHunt)plugin);
         setupNewGame();
     }
@@ -47,8 +59,7 @@ public class Game
         for (Player player : this.plugin.getServer().getOnlinePlayers()) {
             if (player.hasPermission("manhunt.basic")) {
                 if (this.plugin.getConfig().getBoolean("round.survivalplayersonly")) {
-                    if (player.getGameMode() == GameMode.SURVIVAL)
-                    {
+                    if (player.getGameMode() == GameMode.SURVIVAL) {
                         players.add(player);
                     }
                 }
@@ -82,11 +93,15 @@ public class Game
     public ItemStack randomItemStack()
     {
         ItemStack item;
-        if (new Random().nextInt(100) > this.plugin.getConfig().getInt("prizes.enchrate")) { //pick regular item
-            Material material = materialList.get(new Random().nextInt(materialList.size()));
+        if (random.nextInt(100) > this.plugin.getConfig().getInt("prizes.enchrate")) { //pick regular item
+            Material material = materialList.get(random.nextInt(materialList.size()));
             item = randomAmount(material);
+
+            if(Material.POTION.equals(material) || Material.SPLASH_POTION.equals(material)){
+                setPotionEffects(item);
+            }
         } else { //create enchanted item
-            Material material = Prizes.enchantableList[new Random().nextInt(Prizes.enchantableList.length)];
+            Material material = Prizes.enchantableList[random.nextInt(Prizes.enchantableList.length)];
             item = new ItemStack(material, 1);
             item = randomEnchantment(item);
         }
@@ -101,7 +116,24 @@ public class Game
         if(limit == null) {
             limit = material.getMaxStackSize();
         }
-        return new ItemStack(material, 1 + new Random().nextInt(limit));
+        return new ItemStack(material, 1 + random.nextInt(limit));
+    }
+
+    /* Adds potion effects to ItewmStack of potions */
+    private void setPotionEffects(ItemStack stack) {
+        PotionMeta meta = (PotionMeta)stack.getItemMeta();
+        PotionData data = new PotionData(getRandomPotionType());
+        meta.setBasePotionData(data);
+        stack.setItemMeta(meta);
+    }
+
+    /* randomly selects a non-useless potion effect */
+    private PotionType getRandomPotionType(){
+        PotionType ret = PotionType.WATER;
+        while(fakePotions.contains(ret)){
+            ret = PotionType.values()[random.nextInt(PotionType.values().length)];
+        }
+        return ret;
     }
 
     private ItemStack randomEnchantment(ItemStack item) {
@@ -124,7 +156,7 @@ public class Game
                 // don't double up enchantments
                 if(!item.containsEnchantment(enchantment)) {
                     item.addEnchantment(enchantment, 1 + (int)(Math.random() * (enchantment.getMaxLevel() - 1 + 1)));
-                    anotherEnchant = anotherEnchant - (int)(Math.random() * 100);}
+                    anotherEnchant = anotherEnchant - random.nextInt(100);}
             }
         }
 
