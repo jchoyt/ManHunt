@@ -11,7 +11,7 @@ round:
   # Minimum players online to start a round
   minplayers: 2
 
-  # Time from round end to next round start
+  # Seconds from round end to next round start
   delay: 150
 
   # Time before the target earns their survival prize
@@ -27,6 +27,8 @@ prizes:
   includeOverworld: true
   includeNether: true
   includeEnd: false
+  #use only for debugging - always leave this as "false"
+  includeUnused: false
 
 dev:
   # allow AFK players to receive prizes anyway

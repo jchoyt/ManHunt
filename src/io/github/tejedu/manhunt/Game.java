@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -53,7 +53,8 @@ public class Game
             materialList.addAll(Prizes.netherPrizes);
         if (this.plugin.getConfig().getBoolean("prizes.includeEnd"))
             materialList.addAll(Prizes.endPrizes);
-        // materialList.addAll(Prizes.unusedPrizes);
+        if (this.plugin.getConfig().getBoolean("prizes.includeUnused"))
+            materialList.addAll(Prizes.unusedPrizes);
 
         List<Player> players = new ArrayList();
         for (Player player : this.plugin.getServer().getOnlinePlayers()) {
