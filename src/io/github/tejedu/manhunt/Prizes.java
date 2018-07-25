@@ -977,5 +977,9 @@ public class Prizes
         prizeLimits.put(Material.ENDER_CHEST, 8);
         prizeLimits.put(Material.GHAST_TEAR, 8);
         prizeLimits.put(Material.AIR, 1);
+        prizeLimits.put(Material.PHANTOM_MEMBRANE, 10);
+        prizeLimits.put(Material.CONDUIT, 3);
+        prizeLimits.put(Material.NAUTILUS_SHELL, 10);
+        prizeLimits.put(Material.HEART_OF_THE_SEA, 3);
     }
 }

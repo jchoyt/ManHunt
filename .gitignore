@@ -1,5 +1,6 @@
 # Compiled class file
 *.class
+ManHunt.jar
 
 # Log file
 *.log
@@ -11,7 +12,7 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.ear
 *.zip
