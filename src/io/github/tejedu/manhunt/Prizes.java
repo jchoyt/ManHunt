@@ -15,7 +15,7 @@ public class Prizes
 {
     public static List<Material> overworldPrizes = (List<Material>)Arrays.asList(
         Material.ACACIA_BOAT,
-//        Material.ACACIA_BUTTON,
+        // Material.ACACIA_BUTTON,
         // Material.ACACIA_DOOR,
         // Material.ACACIA_FENCE_GATE,
         // Material.ACACIA_FENCE,
@@ -30,7 +30,7 @@ public class Prizes
         // Material.ACACIA_WOOD,
         Material.ACTIVATOR_RAIL,
         Material.ALLIUM,
-        Material.ANDESITE,
+        // Material.ANDESITE,
         Material.ANVIL,
         Material.APPLE,
         Material.ARMOR_STAND,
@@ -444,7 +444,7 @@ public class Prizes
         // Material.OAK_FENCE,
         Material.OAK_LEAVES,
         Material.OAK_LOG,
-        // Material.OAK_PLANKS,
+        Material.OAK_PLANKS,
         // Material.OAK_PRESSURE_PLATE,
         Material.OAK_SAPLING,
         // Material.OAK_SLAB,
