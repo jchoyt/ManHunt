@@ -34,7 +34,7 @@ public class ManHunt extends org.bukkit.plugin.java.JavaPlugin
         if (cmd.getName().equalsIgnoreCase("mh")) {
             if (((sender instanceof Player)) && (this.game != null) && ((Player)sender == this.game.target)) {
                 this.game.targetVerified = true;
-                sender.sendMessage("If you survive for " + this.game.getTimeLeft() + ", you will receive a prize!");
+                sender.sendMessage("If you survive for " + this.game.getTimeLeft() + ", you will receive a prize! Be sure to keep an inventory slot open.");
             }
             return true;
         }
