@@ -169,15 +169,37 @@ public class Game
     {
         this.surviveTimer.cancel();
 
-
         capturer.sendMessage("You captured " + this.plugin.highlightColor + ChatColor.ITALIC + this.target.getDisplayName() +
                      ChatColor.RESET + "!");
         this.target.sendMessage("You were captured by " + this.plugin.highlightColor + ChatColor.ITALIC +
                     capturer.getDisplayName() + ChatColor.RESET + "!");
 
 
-        ItemStack prize = randomItemStack();
+        ItemStack prize = awardPrize(capturer, target);
+		
+        this.plugin.queueGame();
+    }
 
+    public void survive()
+    {
+        if (this.targetVerified || this.plugin.getConfig().getBoolean("dev.allowafk")) {
+            this.target.sendMessage("You survived!");
+
+            ItemStack prize = awardPrize(this.target, null);
+			
+        } else {
+            this.target.sendMessage("You survived but did not verify that you were not AFK!");
+        }
+
+        this.plugin.queueGame();
+    }
+	
+	/*
+		Capturer is not null iff a capture occurred,
+		target is never null.
+	*/
+	public ItemStack awardPrize(Player capturer, Player target) {
+		ItemStack prize = randomItemStack();
 
         String prizeName = prize.getType().name().replace("_", " ");
         StringBuilder b = new StringBuilder(prizeName);
@@ -187,44 +209,31 @@ public class Game
             i = b.indexOf(" ", i) + 1;
         } while ((i > 0) && (i < b.length()));
         prizeName = b.toString();
-        int prizeAmount = prize.getAmount();
-
-        Bukkit.broadcastMessage("" + this.plugin.highlightColor + ChatColor.ITALIC + capturer.getDisplayName() +
+		
+		Player awardPrizeTo = capturer == null ? target : capturer;
+		PlayerInventory inventory = awardPrizeTo.getInventory();
+		HashMap leftovers = inventory.addItem(new ItemStack[] { prize });
+		
+		if(!leftovers.isEmpty()) {
+			World world = awardPrizeTo.getWorld();
+			Location location = awardPrizeTo.getLocation();
+			// Drop items at their feet
+			for(ItemStack itemStack : leftovers.values()) {
+				world.dropItem(location, itemStack);
+			}
+		}
+		
+		if(target != null) {
+			// A capture occurred
+			Bukkit.broadcastMessage("" + this.plugin.highlightColor + ChatColor.ITALIC + capturer.getDisplayName() +
                     ChatColor.RESET + " captured " + this.plugin.highlightColor + ChatColor.ITALIC + this.target.getDisplayName() +
-                    ChatColor.RESET + " and won " + prizeAmount + " " + prizeName + "!");
-
-
-        capturer.getInventory().addItem(new ItemStack[] { prize });
-        this.plugin.queueGame();
-    }
-
-    public void survive()
-    {
-        if (this.targetVerified || this.plugin.getConfig().getBoolean("dev.allowafk")) {
-            this.target.sendMessage("You survived!");
-
-            ItemStack prize = randomItemStack();
-
-            String prizeName = prize.getType().name().replace("_", " ");
-            StringBuilder b = new StringBuilder(prizeName);
-            int i = 0;
-            do {
-                b.replace(i, i + 1, b.substring(i, i + 1).toUpperCase());
-                i = b.indexOf(" ", i) + 1;
-            } while ((i > 0) && (i < b.length()));
-            prizeName = b.toString();
-            int prizeAmount = prize.getAmount();
-
-            Bukkit.broadcastMessage("" + this.plugin.highlightColor + ChatColor.ITALIC + this.target.getDisplayName() +
+                    ChatColor.RESET + " and won " + prize.getAmount() + " " + prizeName + "!");
+		} else {
+			// A survive occurred
+			Bukkit.broadcastMessage("" + this.plugin.highlightColor + ChatColor.ITALIC + this.target.getDisplayName() +
                         ChatColor.RESET + " survived and won " + prizeAmount + " " + prizeName + "!");
-
-            this.target.getInventory().addItem(new ItemStack[] { prize });
-        } else {
-            this.target.sendMessage("You survived but did not verify that you were not AFK!");
-        }
-
-        this.plugin.queueGame();
-    }
+		}
+	}
 
     public void cancelSurviveTimer() {
         if (this.surviveTimer != null) {
