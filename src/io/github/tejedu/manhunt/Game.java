@@ -5,13 +5,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -175,8 +178,8 @@ public class Game
                     capturer.getDisplayName() + ChatColor.RESET + "!");
 
 
-        ItemStack prize = awardPrize(capturer, target);
-		
+        awardPrize(capturer, target);
+
         this.plugin.queueGame();
     }
 
@@ -185,20 +188,20 @@ public class Game
         if (this.targetVerified || this.plugin.getConfig().getBoolean("dev.allowafk")) {
             this.target.sendMessage("You survived!");
 
-            ItemStack prize = awardPrize(this.target, null);
-			
+            awardPrize(this.target, null);
+
         } else {
             this.target.sendMessage("You survived but did not verify that you were not AFK!");
         }
 
         this.plugin.queueGame();
     }
-	
+
 	/*
 		Capturer is not null iff a capture occurred,
 		target is never null.
 	*/
-	public ItemStack awardPrize(Player capturer, Player target) {
+	public void awardPrize(Player capturer, Player target) {
 		ItemStack prize = randomItemStack();
 
         String prizeName = prize.getType().name().replace("_", " ");
@@ -209,11 +212,11 @@ public class Game
             i = b.indexOf(" ", i) + 1;
         } while ((i > 0) && (i < b.length()));
         prizeName = b.toString();
-		
+
 		Player awardPrizeTo = capturer == null ? target : capturer;
 		PlayerInventory inventory = awardPrizeTo.getInventory();
-		HashMap leftovers = inventory.addItem(new ItemStack[] { prize });
-		
+		Map<Integer,ItemStack> leftovers = inventory.addItem(new ItemStack[] { prize });
+
 		if(!leftovers.isEmpty()) {
 			World world = awardPrizeTo.getWorld();
 			Location location = awardPrizeTo.getLocation();
@@ -222,7 +225,7 @@ public class Game
 				world.dropItem(location, itemStack);
 			}
 		}
-		
+
 		if(target != null) {
 			// A capture occurred
 			Bukkit.broadcastMessage("" + this.plugin.highlightColor + ChatColor.ITALIC + capturer.getDisplayName() +
@@ -231,7 +234,7 @@ public class Game
 		} else {
 			// A survive occurred
 			Bukkit.broadcastMessage("" + this.plugin.highlightColor + ChatColor.ITALIC + this.target.getDisplayName() +
-                        ChatColor.RESET + " survived and won " + prizeAmount + " " + prizeName + "!");
+                        ChatColor.RESET + " survived and won " + prize.getAmount() + " " + prizeName + "!");
 		}
 	}
 
