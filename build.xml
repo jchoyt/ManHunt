@@ -23,7 +23,8 @@
     </target>
 
     <target name="compile" depends="init">
-        <javac srcdir="${src}" destdir="${build}" deprecation="on" debug="on" description="Compile the java code from ${src} into ${build}">
+        <javac target="1.8" source="1.8"
+            srcdir="${src}" destdir="${build}" deprecation="on" debug="on" description="Compile the java code from ${src} into ${build}">
             <include name="**/*.java" />
             <classpath>
                 <path refid="jarspath" />
