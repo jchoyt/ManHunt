@@ -629,7 +629,7 @@ public class Prizes
         Material.SUGAR,
         Material.SUNFLOWER,
         Material.TALL_GRASS,
-        Material.TALL_SEAGRASS,
+        //Material.TALL_SEAGRASS,
         Material.TERRACOTTA,
         Material.TNT_MINECART,
         Material.TNT,
@@ -936,6 +936,7 @@ public class Prizes
     public static Map<Material, Integer> prizeLimits = new HashMap<Material, Integer>();
 
     public static void setPrizeLimits() {
+        prizeLimits.put(Material.ENCHANTED_GOLDEN_APPLE, 5);
         prizeLimits.put(Material.NETHER_STAR, 3);
         prizeLimits.put(Material.BEACON, 3);
         prizeLimits.put(Material.END_CRYSTAL, 3);
