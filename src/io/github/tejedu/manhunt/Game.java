@@ -192,6 +192,8 @@ public class Game
 
         } else {
             this.target.sendMessage("You survived but did not verify that you were not AFK!");
+            AfkEvent event = new AfkEvent(this.target);
+            Bukkit.getServer().getPluginManager().callEvent(event);
         }
 
         this.plugin.queueGame();
