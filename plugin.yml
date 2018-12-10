@@ -1,7 +1,7 @@
 name: ManHunt
 description: A game of ManHunt with prizes!
 main: io.github.tejedu.manhunt.ManHunt
-version: 1.2
+version: 1.4
 author: "github: tejedu, minecraft: aeae"
 website: http://tejedu.github.io/
 prefix: "Man Hunt"
