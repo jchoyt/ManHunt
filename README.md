@@ -1,4 +1,6 @@
 Version history
+* v1.5
+    * Added 1.14 blocks
 * v1.2
     * if inventory is full, drop the stack at the player's feet
     * added AfkEvent which fires when a player doesn't acknowledge they are the target
@@ -21,4 +23,3 @@ Version history
 
 Possible further enhancements:
 * actual enchanted books
-* dyes (intercept "INK_SAC" and turn it  into a different type of dye)
