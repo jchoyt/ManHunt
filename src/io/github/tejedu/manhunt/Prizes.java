@@ -596,13 +596,13 @@ public class Prizes
         Material.YELLOW_CARPET,
         Material.YELLOW_CONCRETE_POWDER,
         Material.YELLOW_CONCRETE,
-        Material.YELLOW_DYE
+        Material.YELLOW_DYE,
         Material.YELLOW_GLAZED_TERRACOTTA,
         Material.YELLOW_STAINED_GLASS_PANE,
         Material.YELLOW_STAINED_GLASS,
         Material.YELLOW_TERRACOTTA,
         Material.YELLOW_WOOL,
-        Material.ZOMBIE_HEAD,
+        Material.ZOMBIE_HEAD
     );
 
     public static List<Material> netherPrizes = (List<Material>)Arrays.asList(
