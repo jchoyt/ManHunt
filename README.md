@@ -1,4 +1,7 @@
 Version history
+* v1.6
+    * Added 1.15 blocks - mostly bees and honey
+    * Added 1.16 blocks - it's a Nether extravaganza!!
 * v1.5
     * Added 1.14 blocks
 * v1.2

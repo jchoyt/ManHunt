@@ -25,7 +25,7 @@ prizes:
   enchrate: 50
   # whether to include prizes from various realms in the prize pool
   includeOverworld: true
-  includeNether: true
+  includeNether: false
   includeEnd: false
   #use only for debugging - always leave this as "false"
   includeUnused: false
