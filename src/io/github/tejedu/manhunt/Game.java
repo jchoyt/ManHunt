@@ -33,6 +33,7 @@ public class Game
     public ManHunt plugin;
     public BukkitTask surviveTimer;
     private List<Material> materialList = new ArrayList<Material>();
+    private List<Material> enchantableList = new ArrayList<Material>();
     public long roundEnd;
     private Random random = new Random();
     private Set<PotionType> fakePotions = new HashSet<PotionType>();
@@ -50,10 +51,14 @@ public class Game
 
     public void setupNewGame()
     {
-        if (this.plugin.getConfig().getBoolean("prizes.includeOverworld"))
+        if (this.plugin.getConfig().getBoolean("prizes.includeOverworld")) {
+            enchantableList.addAll(Prizes.overworldEnchantableList);
             materialList.addAll(Prizes.overworldPrizes);
-        if (this.plugin.getConfig().getBoolean("prizes.includeNether"))
+        }
+        if (this.plugin.getConfig().getBoolean("prizes.includeNether")) {
+            enchantableList.addAll(Prizes.netherEnchantableList);
             materialList.addAll(Prizes.netherPrizes);
+        }
         if (this.plugin.getConfig().getBoolean("prizes.includeEnd"))
             materialList.addAll(Prizes.endPrizes);
         if (this.plugin.getConfig().getBoolean("prizes.includeUnused"))
@@ -105,7 +110,7 @@ public class Game
                 setPotionEffects(item);
             }
         } else { //create enchanted item
-            Material material = Prizes.enchantableList[random.nextInt(Prizes.enchantableList.length)];
+            Material material = enchantableList.get(random.nextInt(enchantableList.size()));
             item = new ItemStack(material, 1);
             item = randomEnchantment(item);
         }
