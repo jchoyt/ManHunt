@@ -975,5 +975,7 @@ public class Prizes
         prizeLimits.put(Material.CONDUIT, 3);
         prizeLimits.put(Material.NAUTILUS_SHELL, 10);
         prizeLimits.put(Material.HEART_OF_THE_SEA, 3);
+        prizeLimits.put(Material.NETHERITE_INGOT, 10);
+        prizeLimits.put(Material.NETHERITE_BLOCK, 4)
     }
 }
