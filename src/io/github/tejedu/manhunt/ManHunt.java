@@ -1,6 +1,7 @@
 package io.github.tejedu.manhunt;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -57,6 +58,31 @@ public class ManHunt extends org.bukkit.plugin.java.JavaPlugin
                     queueGame();
                 }
             }
+            return true;
+        }
+
+        if (cmd.getName().equalsIgnoreCase("prize")) {
+
+            if (args.length != 1) {
+                sender.sendMessage("Specify a recepient!");
+                return false;
+            }
+
+            // check that the player is online
+            OfflinePlayer offlinePlayer = this.getPlayerByName(args[0]);
+            if(offlinePlayer == null) {
+                sender.sendMessage(args[0] + " has never logged in to this server.");
+                return false;
+            }
+            Player target = offlinePlayer.getPlayer();
+
+            if (target == null) {
+                sender.sendMessage(args[0] + " is not online!");
+                return false;
+            }
+            sender.sendMessage("Giving " + target.getDisplayName() + " a prize. I hope they've earned it.");
+            game.awardPrize(target, null);
+            return true;
         }
         return true;
     }
@@ -77,5 +103,23 @@ public class ManHunt extends org.bukkit.plugin.java.JavaPlugin
 
     public void createGame() {
         this.game = new Game(this);
+    }
+
+    /*
+     * If a player has ever logged into this server, this returns the OfflinePlayer
+     * representation of that player. Returns null if the player has never logged
+     * to this server. To see if the player is currently online, use OfflinePlayer.getPlayer()
+     * which will return a Player object if they are online or null if they are not.
+     */
+    public OfflinePlayer getPlayerByName(String name) {
+        OfflinePlayer[]  offlinePlayers = this.getServer().getOfflinePlayers();
+        OfflinePlayer targetPlayer = null;
+        for(OfflinePlayer p: offlinePlayers) {
+            if(name.equalsIgnoreCase(p.getName())) {
+                targetPlayer = p;
+                break;
+            }
+        }
+        return targetPlayer;
     }
 }

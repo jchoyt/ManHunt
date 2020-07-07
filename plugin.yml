@@ -20,6 +20,10 @@ commands:
     description: Starts the game after a delay
     usage: "Usage: /mhstart [time_in_seconds]"
     permission: manhunt.admin
+  prize:
+    description: Gives the specified target player a prize
+    usage: "Usage: /prize [target]"
+    permission: manhunt.admin
 
 permissions:
   manhunt.basic:

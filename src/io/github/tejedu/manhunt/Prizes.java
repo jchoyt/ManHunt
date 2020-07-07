@@ -673,10 +673,6 @@ public class Prizes
         Material.POLISHED_BLACKSTONE_SLAB,
         Material.POLISHED_BLACKSTONE_STAIRS,
         Material.POLISHED_BLACKSTONE_WALL,
-        Material.POTTED_CRIMSON_FUNGUS,
-        Material.POTTED_CRIMSON_ROOTS,
-        Material.POTTED_WARPED_FUNGUS,
-        Material.POTTED_WARPED_ROOTS,
         Material.QUARTZ_BLOCK,
         Material.QUARTZ_BRICKS,
         Material.QUARTZ_PILLAR,
@@ -976,6 +972,6 @@ public class Prizes
         prizeLimits.put(Material.NAUTILUS_SHELL, 10);
         prizeLimits.put(Material.HEART_OF_THE_SEA, 3);
         prizeLimits.put(Material.NETHERITE_INGOT, 10);
-        prizeLimits.put(Material.NETHERITE_BLOCK, 4)
+        prizeLimits.put(Material.NETHERITE_BLOCK, 4);
     }
 }

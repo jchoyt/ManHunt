@@ -206,11 +206,11 @@ public class Game
 
 	/*
 		Capturer is not null iff a capture occurred,
-		target is never null.
 	*/
 	public void awardPrize(Player capturer, Player target) {
 		ItemStack prize = randomItemStack();
 
+        //reformat the item name
         String prizeName = prize.getType().name().replace("_", " ");
         StringBuilder b = new StringBuilder(prizeName);
         int i = 0;
@@ -220,10 +220,12 @@ public class Game
         } while ((i > 0) && (i < b.length()));
         prizeName = b.toString();
 
+        // determine who gets the prize
 		Player awardPrizeTo = capturer == null ? target : capturer;
 		PlayerInventory inventory = awardPrizeTo.getInventory();
 		Map<Integer,ItemStack> leftovers = inventory.addItem(new ItemStack[] { prize });
 
+        // if the winner's inventory is full, drop the prize at their feet
 		if(!leftovers.isEmpty()) {
 			World world = awardPrizeTo.getWorld();
 			Location location = awardPrizeTo.getLocation();
@@ -235,13 +237,17 @@ public class Game
 
 		if(target != null) {
 			// A capture occurred
-			Bukkit.broadcastMessage("" + this.plugin.highlightColor + ChatColor.ITALIC + capturer.getDisplayName() +
+			Bukkit.broadcastMessage("" + this.plugin.highlightColor + ChatColor.ITALIC + awardPrizeTo.getDisplayName() +
                     ChatColor.RESET + " captured " + this.plugin.highlightColor + ChatColor.ITALIC + this.target.getDisplayName() +
                     ChatColor.RESET + " and won " + prize.getAmount() + " " + prizeName + "!");
 		} else {
 			// A survive occurred
-			Bukkit.broadcastMessage("" + this.plugin.highlightColor + ChatColor.ITALIC + this.target.getDisplayName() +
-                        ChatColor.RESET + " survived and won " + prize.getAmount() + " " + prizeName + "!");
+			Bukkit.broadcastMessage("" +
+                    this.plugin.highlightColor +
+                    ChatColor.ITALIC +
+                    awardPrizeTo.getDisplayName() +
+                    ChatColor.RESET + " survived and won " +
+                    prize.getAmount() + " " + prizeName + "!");
 		}
 	}
 
