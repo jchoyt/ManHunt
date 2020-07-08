@@ -1,4 +1,6 @@
 Version history
+* v1.6.01
+    * Added /prize <target> command to give a prize to someone. Admin only. 
 * v1.6
     * Added 1.15 blocks - mostly bees and honey
     * Added 1.16 blocks - it's a Nether extravaganza!!
