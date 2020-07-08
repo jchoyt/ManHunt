@@ -40,17 +40,23 @@ public class Game
 
     public Game(JavaPlugin plugin)
     {
-        fakePotions.add(PotionType.AWKWARD);
-        fakePotions.add(PotionType.MUNDANE);
-        fakePotions.add(PotionType.THICK);
-        fakePotions.add(PotionType.UNCRAFTABLE);
-        fakePotions.add(PotionType.WATER);
-        this.plugin = ((ManHunt)plugin);
-        setupNewGame();
+        this(plugin, true);
     }
 
-    public void setupNewGame()
+    public Game(JavaPlugin plugin, boolean startNewGame)
     {
+        this.plugin = ((ManHunt)plugin);
+        loadPrizeLists();
+        if(startNewGame)
+            setupNewGame();
+    }
+
+    public Game() {
+        this.plugin = ((ManHunt)plugin);
+    }
+
+
+    public void loadPrizeLists() {
         if (this.plugin.getConfig().getBoolean("prizes.includeOverworld")) {
             enchantableList.addAll(Prizes.overworldEnchantableList);
             materialList.addAll(Prizes.overworldPrizes);
@@ -63,7 +69,15 @@ public class Game
             materialList.addAll(Prizes.endPrizes);
         if (this.plugin.getConfig().getBoolean("prizes.includeUnused"))
             materialList.addAll(Prizes.unusedPrizes);
+        fakePotions.add(PotionType.AWKWARD);
+        fakePotions.add(PotionType.MUNDANE);
+        fakePotions.add(PotionType.THICK);
+        fakePotions.add(PotionType.UNCRAFTABLE);
+        fakePotions.add(PotionType.WATER);
+    }
 
+    public void setupNewGame()
+    {
         List<Player> players = new ArrayList();
         for (Player player : this.plugin.getServer().getOnlinePlayers()) {
             if (player.hasPermission("manhunt.basic")) {

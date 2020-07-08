@@ -81,7 +81,7 @@ public class ManHunt extends org.bukkit.plugin.java.JavaPlugin
                 return false;
             }
             sender.sendMessage("Giving " + target.getDisplayName() + " a prize. I hope they've earned it.");
-            game.awardPrize(target, null);
+            new Game(this, false).awardPrize(target, null);
             return true;
         }
         return true;
