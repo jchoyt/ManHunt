@@ -23,7 +23,7 @@
     </target>
 
     <target name="compile" depends="init">
-        <javac target="1.8" source="1.8"
+        <javac target="1.16" source="1.16"
             srcdir="${src}" destdir="${build}" deprecation="on" debug="on" description="Compile the java code from ${src} into ${build}">
             <include name="**/*.java" />
             <classpath>
