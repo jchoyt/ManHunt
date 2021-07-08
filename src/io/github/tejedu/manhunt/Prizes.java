@@ -688,7 +688,7 @@ public class Prizes
         Material.SOUL_SAND,
         Material.SOUL_SOIL,
         Material.SOUL_TORCH,
-        Material.SOUL_WALL_TORCH,
+        //Material.SOUL_WALL_TORCH,
         Material.STRIPPED_CRIMSON_HYPHAE,
         Material.STRIPPED_CRIMSON_STEM,
         Material.STRIPPED_WARPED_HYPHAE,
@@ -974,5 +974,6 @@ public class Prizes
         prizeLimits.put(Material.NETHERITE_SCRAP, 32);
         prizeLimits.put(Material.NETHERITE_INGOT, 10);
         prizeLimits.put(Material.NETHERITE_BLOCK, 1);
+        prizeLimits.put(Material.SHULKER_SHELL, 8);
     }
 }
