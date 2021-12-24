@@ -371,6 +371,7 @@ public class Prizes
         Material.MUSIC_DISC_FAR,
         Material.MUSIC_DISC_MALL,
         Material.MUSIC_DISC_MELLOHI,
+        Material.MUSIC_DISC_OTHERSIDE,
         Material.MUSIC_DISC_STAL,
         Material.MUSIC_DISC_STRAD,
         Material.MUSIC_DISC_WAIT,
@@ -1133,5 +1134,6 @@ public class Prizes
         prizeLimits.put(Material.NETHERITE_INGOT, 10);
         prizeLimits.put(Material.NETHERITE_BLOCK, 1);
         prizeLimits.put(Material.SHULKER_SHELL, 8);
+        prizeLimits.put(Material.DRAGON_HEAD, 3);
     }
 }

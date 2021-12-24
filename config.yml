@@ -22,7 +22,7 @@ round:
 
 prizes:
   # % of prizes that will be enchanted items
-  enchrate: 50
+  enchrate: 10
   # whether to include prizes from various realms in the prize pool
   includeOverworld: true
   includeNether: false
