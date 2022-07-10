@@ -3,7 +3,8 @@
     <property name="src" value="./src" />
     <property name="build" value="./build" />
     <property name="doc" value="./doc" />
-    <property name="jarfile" value="${ant.project.name}.jar" />
+    <property name="version" value="1.9.0" />
+    <property name="jarfile" value="${ant.project.name}-${version}.jar" />
     <property name="build.compiler" value="modern" />
     <property name="lib" value="lib"/>
     <dirname property="antfile.dir" file="${ant.file}"/>
@@ -23,7 +24,8 @@
     </target>
 
     <target name="compile" depends="init">
-        <javac srcdir="${src}" destdir="${build}" deprecation="on" debug="on" description="Compile the java code from ${src} into ${build}">
+      <javac target="17" source="17"
+          srcdir="${src}" destdir="${build}" deprecation="on" debug="on" description="Compile the java code from ${src} into ${build}">
             <include name="**/*.java" />
             <classpath>
                 <path refid="jarspath" />

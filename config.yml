@@ -9,7 +9,7 @@ preferences:
   chathighlight: d
 round:
   # Minimum players online to start a round
-  minplayers: 2
+  minplayers: 4
 
   # Seconds from round end to next round start
   delay: 150
@@ -27,8 +27,6 @@ prizes:
   includeOverworld: true
   includeNether: false
   includeEnd: false
-  #use only for debugging - always leave this as "false"
-  includeUnused: false
 
 dev:
   # allow AFK players to receive prizes anyway

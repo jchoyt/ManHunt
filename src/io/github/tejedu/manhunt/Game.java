@@ -67,8 +67,6 @@ public class Game
         }
         if (this.plugin.getConfig().getBoolean("prizes.includeEnd"))
             materialList.addAll(Prizes.endPrizes);
-        if (this.plugin.getConfig().getBoolean("prizes.includeUnused"))
-            materialList.addAll(Prizes.unusedPrizes);
         fakePotions.add(PotionType.AWKWARD);
         fakePotions.add(PotionType.MUNDANE);
         fakePotions.add(PotionType.THICK);
