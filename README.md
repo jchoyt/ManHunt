@@ -1,4 +1,6 @@
 Version history
+* v1.19.1
+  * removed spawn eggs that slipped in with the 1.19 update
 * v1.6.03
     * Lowered limit for Netherite prizes
 * v1.6.02

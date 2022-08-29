@@ -326,13 +326,11 @@ public class Prizes
         Material.ZOMBIE_HEAD,
         // 1.19
         Material.ACACIA_CHEST_BOAT,
-        Material.ALLAY_SPAWN_EGG,
         Material.BIRCH_CHEST_BOAT,
         Material.DARK_OAK_CHEST_BOAT,
         Material.DISC_FRAGMENT_5,
         Material.ECHO_SHARD,
         Material.FROGSPAWN,
-        Material.FROG_SPAWN_EGG,
         Material.GOAT_HORN,
         Material.JUNGLE_CHEST_BOAT,
         Material.MANGROVE_BOAT,
