@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -13,6 +14,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Registry;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -34,8 +36,8 @@ public class Game
     public BukkitTask surviveTimer;
     private List<Material> materialList = new ArrayList<Material>();
     private List<Material> enchantableList = new ArrayList<Material>();
-    public long roundEnd;
-    private Random random = new Random();
+        public long roundEnd;
+        private Random random = new Random();
     private Set<PotionType> fakePotions = new HashSet<PotionType>();
 
     public Game(JavaPlugin plugin)
@@ -70,7 +72,6 @@ public class Game
         fakePotions.add(PotionType.AWKWARD);
         fakePotions.add(PotionType.MUNDANE);
         fakePotions.add(PotionType.THICK);
-        fakePotions.add(PotionType.UNCRAFTABLE);
         fakePotions.add(PotionType.WATER);
     }
 
@@ -143,8 +144,7 @@ public class Game
     /* Adds potion effects to ItewmStack of potions */
     private void setPotionEffects(ItemStack stack) {
         PotionMeta meta = (PotionMeta)stack.getItemMeta();
-        PotionData data = new PotionData(getRandomPotionType());
-        meta.setBasePotionData(data);
+        meta.setBasePotionType(getRandomPotionType());
         stack.setItemMeta(meta);
     }
 
@@ -159,10 +159,9 @@ public class Game
 
     private ItemStack randomEnchantment(ItemStack item) {
         ArrayList<Enchantment> possibleEnchantments = new ArrayList();
-        Enchantment[] arrayOfEnchantment;
-        int j = (arrayOfEnchantment = Enchantment.values()).length;
-        for (int i = 0; i < j; i++) {
-            Enchantment e = arrayOfEnchantment[i];
+        Iterator<Enchantment> it = Registry.ENCHANTMENT.iterator();
+        while (it.hasNext()) {
+            Enchantment e = it.next();
             if (e.canEnchantItem(item)) {
                 possibleEnchantments.add(e);
             }
