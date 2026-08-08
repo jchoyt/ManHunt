@@ -533,7 +533,9 @@ public class Prizes
         Material.BLAZE_POWDER,
         Material.BLAZE_ROD,
         Material.BREWING_STAND,
-        Material.CHAIN,
+        // TODO: CHAIN was removed/renamed by Spigot 26.2 (likely replaced by
+        // IRON_CHAIN, part of a new copper-chain block family) - deferred to
+        // the separate prize-list content update pass.
         Material.CHISELED_NETHER_BRICKS,
         Material.CHISELED_POLISHED_BLACKSTONE,
         Material.COMPARATOR,

@@ -11,13 +11,13 @@ def jarBaseName = 'ManHunt'
 // instead of being duplicated here. To bump the version, edit plugin.yml.
 version = (file('plugin.yml').readLines().find { it.startsWith('version:') } - 'version:').trim()
 
-// Target Java 21 bytecode — the newest release both the Spigot 1.21 server
-// itself requires (Minecraft 1.20.5+ needs a Java 21+ JVM to run) and the
+// Target Java 25 bytecode — the newest release both the Spigot 26.2 server
+// itself requires (Minecraft 26.1+ needs a Java 25+ JVM to run) and the
 // Gradle wrapper here (9.7.0) fully supports. Using --release lets any
-// modern JDK cross-compile without needing a JDK 21 toolchain
+// modern JDK cross-compile without needing a JDK 25 toolchain
 // installed/downloaded.
 tasks.withType(JavaCompile).configureEach {
-    options.release = 21
+    options.release = 25
 }
 
 // Source lives in ./src, not the Maven-standard src/main/java layout.
@@ -41,7 +41,8 @@ sourceSets {
 repositories {
     mavenCentral()
     maven {
-        // Spigot's own repo, in case the local jar in lib/ ever needs updating.
+        // Spigot's own repo — resolves the spigot-api snapshot dependency
+        // below directly, no local jar needed.
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
     maven {
@@ -53,18 +54,24 @@ repositories {
 
 dependencies {
     // The Spigot API is provided by the server at runtime, so it's
-    // compile-only and never bundled into the plugin jar.
-    compileOnly files('lib/spigot-api-1.21-R0.1-SNAPSHOT.jar')
+    // compile-only and never bundled into the plugin jar. Resolved directly
+    // from Spigot's snapshot repo (see repositories{} above) rather than a
+    // vendored jar in lib/.
+    compileOnly 'org.spigotmc:spigot-api:26.2-R0.1-SNAPSHOT'
 
     // MockBukkit spins up a fake server so plugin code can be unit tested
     // without a real Minecraft server. It only provides the mock
     // implementations (ServerMock, PlayerMock, ...); the actual org.bukkit
-    // API interfaces come transitively from a matching paper-api snapshot.
-    // Pinned to 4.0.0 (-> paper-api 1.21.1) rather than the newest MockBukkit
-    // release, which pulls a much later 1.21.11 API where some Materials
-    // used here (e.g. CHAIN) were renamed — 1.21.1 matches this plugin's
-    // actual api-version: 1.21 target far more closely.
-    testImplementation 'org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.0.0'
+    // API interfaces come from a separately-declared paper-api matching its
+    // pin, below. Pinned to v26.1.2 (the latest available branch) rather
+    // than an exact 26.2 match, because MockBukkit has no v26.2 build yet as
+    // of this writing.
+    testImplementation 'org.mockbukkit.mockbukkit:mockbukkit-v26.1.2:4.115.0'
+    // Paper switched to a <mcversion>.build.<N>-<stability> version scheme
+    // (no more -R0.1-SNAPSHOT) - this exact build is what the MockBukkit jar
+    // above is built against (check its META-INF/MANIFEST.MF Paper-Version
+    // attribute if bumping either dependency).
+    testImplementation 'io.papermc.paper:paper-api:26.1.2.build.72-stable'
     testImplementation platform('org.junit:junit-bom:5.11.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -73,7 +80,7 @@ dependencies {
 test {
     useJUnitPlatform()
     javaLauncher = javaToolchains.launcherFor {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 

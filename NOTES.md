@@ -1,6 +1,6 @@
 # ManHunt — Repo Notes
 
-_Last reviewed: 2026-08-07_
+_Last reviewed: 2026-08-08_
 
 ## What it is
 
@@ -14,12 +14,13 @@ item prize.
 - Main class: `ManHunt` (extends `JavaPlugin`)
 - Author: jchoyt (github) / Entomo (minecraft)
 - Repo: https://github.com/jchoyt/ManHunt
-- Current version: **1.21.0** (targets Minecraft/Spigot API 1.21, Java 21)
+- Current version: **26.2.0** (targets Minecraft/Spigot API 26.2, Java 25 —
+  see "Spigot 26.2 migration" below)
 - Built with **Gradle** (via the wrapper — `./gradlew build`), compiling
-  against `lib/spigot-api-1.21-R0.1-SNAPSHOT.jar` (compile-only; not bundled)
-  → produces `ManHunt-<version>.jar` in the project root, bundling
-  `plugin.yml` and `config.yml`. (Migrated from Ant's `build.xml` on
-  2026-08-07 — see "Build system" below.)
+  against `org.spigotmc:spigot-api:26.2-R0.1-SNAPSHOT` (compile-only, resolved
+  from Spigot's snapshot repo; not bundled) → produces `ManHunt-<version>.jar`
+  in the project root, bundling `plugin.yml` and `config.yml`. (Migrated from
+  Ant's `build.xml` on 2026-08-07 — see "Build system" below.)
 - License: MIT (Prizes.java header) / Apache 2.0 (AfkEvent.java header) —
   mixed headers, `LICENSE` file at repo root is the authoritative one to check.
 
@@ -67,6 +68,12 @@ item prize.
 - Config `prizes.includeOverworld/includeNether/includeEnd` toggles which
   realm's prize pool is active (End material list exists but there's no
   `endEnchantableList`, so enchanted End prizes aren't currently possible).
+- `netherPrizes` is missing an entry for `CHAIN` (removed/renamed in Spigot
+  26.2, likely replaced by `IRON_CHAIN` as part of a new copper-chain block
+  family — see the `// TODO` at that spot in `Prizes.java`) — a forced
+  compile fix from the 26.2 migration, not a deliberate content change. The
+  broader prize-list content update (adding new 26.x materials, fixing this
+  gap properly) is intentionally deferred to a separate pass.
 - `prizes.enchrate` (%) chance the prize is an enchanted item instead of a
   plain one.
   - Plain items: random amount from the curated list; amount is
@@ -147,20 +154,20 @@ dev.allowafk                # let AFK (unverified) targets still get survive pri
   points the `main` sourceSet's `java` dir straight at `./src`, and its
   `resources` dir at `.` (root), including only `plugin.yml`/`config.yml`, to
   reproduce the old jar contents exactly.
-- Compiles targeting **Java 21 bytecode** via `options.release = 21` on
+- Compiles targeting **Java 25 bytecode** via `options.release = 25` on
   `JavaCompile` (not `sourceCompatibility`/a toolchain) — this lets any modern
-  JDK cross-compile without needing an actual JDK 21 install, and avoids both
+  JDK cross-compile without needing an actual JDK 25 install, and avoids both
   a deprecated-API warning and toolchain auto-provisioning/network dependency.
-  21 was chosen (bumped up from Java 17 originally) because Minecraft/Spigot
-  1.20.5+ (which includes 1.21) requires a Java 21+ JVM to run the server at
-  all, so there's no benefit to targeting older bytecode, and Gradle 9.7.0
-  fully supports it.
-- `lib/spigot-api-1.21-R0.1-SNAPSHOT.jar` is depended on as `compileOnly`
-  (files() dependency) since Spigot provides that API at runtime — it's
-  correctly excluded from the built plugin jar. `mavenCentral()` and
-  Spigot's own repo (hub.spigotmc.org) are declared in `repositories{}` for
-  future dependency additions/API jar upgrades, though nothing currently
-  resolves from them.
+  25 was chosen (bumped from 21 during the 26.2 migration, see below) because
+  Minecraft/Spigot 26.1+ requires a Java 25+ JVM to run the server at all, so
+  there's no benefit to targeting older bytecode, and Gradle 9.7.0 fully
+  supports it.
+- `spigot-api` is a `compileOnly` Gradle dependency (`org.spigotmc:spigot-api:
+  26.2-R0.1-SNAPSHOT`, resolved from Spigot's snapshot repo declared in
+  `repositories{}`) since Spigot provides that API at runtime — it's
+  correctly excluded from the built plugin jar. Previously a manually
+  vendored jar in `lib/`; switched to a real dependency during the 26.2
+  migration (see below) since Spigot's repo was already configured.
 - `jar` task output: base name `ManHunt`, written to the **project root**
   (not the Gradle-default `build/libs/`) to match the old Ant behavior —
   i.e. `./ManHunt-<version>.jar`.
@@ -189,28 +196,29 @@ dev.allowafk                # let AFK (unverified) targets still get survive pri
   — `/prize` has **no in-code permission check at all**, it relies entirely on
   `manhunt.admin` being correctly declared for it in `plugin.yml`, so this
   test is a real regression guard, not just belt-and-suspenders).
-- Uses **[MockBukkit](https://github.com/MockBukkit/MockBukkit)**
-  (`org.mockbukkit.mockbukkit:mockbukkit-v1.21`), which fakes a whole Bukkit
-  server (`ServerMock`, `PlayerMock`, scheduler, event bus, permissions) so
-  plugin code runs close to for-real rather than against hand-mocked
-  `ItemStack`/`Location`/etc. Pinned to **version 4.0.0**, not the newest
-  release, deliberately: newer MockBukkit versions pull a much later Paper API
-  snapshot (1.21.11) where some Materials this plugin uses (e.g. `CHAIN`) were
-  renamed, breaking `Prizes`'s static initializer at runtime. 4.0.0 pulls
-  `paper-api:1.21.1-R0.1-SNAPSHOT` transitively via Gradle module metadata,
-  which matches this plugin's actual `api-version: 1.21` far more closely. If
-  bumping the MockBukkit version, check its jar's
-  `META-INF/MANIFEST.MF` `Paper-Version` attribute against what materials this
-  plugin references before assuming it's a safe upgrade.
-- The test JVM is **pinned to Java 21** (`test { javaLauncher }` in
-  `build.gradle`, with the `foojay-resolver-convention` plugin in
-  `settings.gradle` so Gradle can auto-download a JDK 21 if the machine
-  doesn't have one) — running the tests on JDK 25 hit a ByteBuddy
-  proxy-class-injection bug in MockBukkit's plugin loader (`NullPointerException:
-  No jar file selected`, from `MockBukkitConfiguredPluginClassLoader`) that
-  doesn't reproduce on 21. This is independent of the Gradle *daemon's* JDK
-  (which can be anything ≥21) — only the forked `test` task's JVM needed
-  pinning.
+- Uses **[MockBukkit](https://github.com/MockBukkit/MockBukkit)**, which
+  fakes a whole Bukkit server (`ServerMock`, `PlayerMock`, scheduler, event
+  bus, permissions) so plugin code runs close to for-real rather than
+  against hand-mocked `ItemStack`/`Location`/etc. As of the 26.2 migration,
+  pinned to **`mockbukkit-v26.1.2:4.115.0`** — one drop behind the plugin's
+  actual `api-version: 26.2` target, because MockBukkit had no `v26.2` build
+  at the time. This version doesn't transitively pull a matching `paper-api`
+  (older MockBukkit builds did, via Gradle module metadata; this one
+  doesn't), so `paper-api:26.1.2.build.72-stable` is declared explicitly as
+  a second `testImplementation` — that exact version came from the
+  MockBukkit jar's `META-INF/MANIFEST.MF` `Paper-Version` attribute; check
+  it again before bumping either dependency. Also note Paper switched to a
+  `<mcversion>.build.<N>-<stability>` version scheme (no more `-R0.1-
+  SNAPSHOT`) somewhere along the way.
+- The test JVM previously needed pinning to Java 21 (`test { javaLauncher }`)
+  to dodge a ByteBuddy proxy-class-injection bug in an older MockBukkit's
+  plugin loader on JDK 25 (`NullPointerException: No jar file selected`).
+  That bug **doesn't reproduce** with `mockbukkit-v26.1.2:4.115.0` (bundles
+  a much newer ByteBuddy, 1.18.11 vs. the old 1.15.x) — confirmed by running
+  the suite on JDK 25 repeatedly. `javaLauncher` is now pinned to **25**
+  instead, matching production. `foojay-resolver-convention` in
+  `settings.gradle` still lets Gradle auto-download that JDK if a machine
+  doesn't have one.
 - **`prizes.enchrate` gotcha**: several tests need a deterministic
   non-enchanted prize (enchanting an `ItemStack` under MockBukkit throws
   `NullPointerException: ...craftDelegate is null`, since MockBukkit doesn't
@@ -224,8 +232,41 @@ dev.allowafk                # let AFK (unverified) targets still get survive pri
   "/mh to verify" prompt — tests that read the target's queued messages via
   `PlayerMock.nextMessage()` need to drain the broadcast first.
 
+## Spigot 26.2 migration (2026-08-08)
+
+Minecraft/Spigot switched to a `year.release.patch` versioning scheme in
+2026 (quarterly drops instead of the old `1.XX` series); this plugin moved
+from targeting 1.21 to **26.2** (released June 16, 2026). Plan document, if
+still present: `~/.claude/plans/sorted-coalescing-hanrahan.md`.
+
+- `plugin.yml`: `api-version: 1.21` → `26.2`, `version:` → `26.2.0`.
+- **Verified via diffing the real 26.2 jar against this codebase** (not
+  guessed) that of the 620 unique `Material.*` references anywhere in the
+  source, only `Material.CHAIN` (in `Prizes.java`) fails to resolve — see
+  the Prizes section above. Everything else this plugin touches (`ChatColor`,
+  `GameMode`, `PlayerInteractEntityEvent`, `PlayerQuitEvent`, `BukkitRunnable`,
+  `PotionMeta`/`PotionType`, `ItemStack` enchant methods, `Registry.ENCHANTMENT`,
+  `Enchantment`, `JavaPlugin` config methods) is unchanged in 26.2's API.
+- `lib/` directory (and its vendored `spigot-api-1.21-R0.1-SNAPSHOT.jar`)
+  deleted entirely — `spigot-api` is now a normal Gradle `compileOnly`
+  dependency (see "Build system" above), so there's nothing to manually
+  download and replace on future version bumps.
+- Java bytecode target and test JVM both bumped to **25** (see "Build
+  system" and "Unit tests" above) — Minecraft 26.1+ requires Java 25 to run
+  the server.
+- MockBukkit bumped to `mockbukkit-v26.1.2:4.115.0` (closest available; no
+  `v26.2` build exists yet) with an explicit `paper-api:26.1.2.build.72-
+  stable` test dependency (see "Unit tests" above for why that's needed now
+  and wasn't before). All 41 existing tests passed against it without any
+  test-code changes needed, and repeated runs (8x) showed no flakiness — the
+  one-drop-behind gap didn't turn out to cause any observed friction in
+  practice, contrary to the caution flagged when this was planned.
+
 ## Loose ends / things to check if working on this again
 
+- `Prizes.java`'s `netherPrizes` is missing a `CHAIN` replacement (see
+  "Spigot 26.2 migration" above) — the broader prize-list content update for
+  new 26.x materials is a separate, not-yet-scheduled pass.
 - No `endEnchantableList` — enchanted End-realm prizes can't currently be
   generated even if `includeEnd` is true and an End material is drawn.
 - Mixed license headers (MIT in `Prizes.java`, Apache 2.0 in `AfkEvent.java`)

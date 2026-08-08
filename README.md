@@ -24,9 +24,9 @@ wrapper — you don't need Gradle installed, just a JDK.
 ./gradlew build
 ```
 
-This compiles the plugin against the Spigot API jar in `lib/` and produces
-`ManHunt-<version>.jar` in the project root, ready to drop into a server's
-`plugins/` folder.
+This compiles the plugin against the Spigot API (resolved automatically by
+Gradle — no manual jar to download) and produces `ManHunt-<version>.jar` in
+the project root, ready to drop into a server's `plugins/` folder.
 
 Other useful tasks:
 
@@ -43,7 +43,7 @@ the version is just:
 
 1. Edit `version:` in `plugin.yml`.
 2. Run `./gradlew build` — the output jar name picks up the new version
-   automatically (e.g. `ManHunt-1.22.0.jar`).
+   automatically (e.g. `ManHunt-26.3.0.jar`).
 
 There's nothing to keep in sync in `build.gradle` — it derives its version
 from `plugin.yml` at build time.
@@ -60,12 +60,17 @@ events can be exercised without a real Minecraft server.
 ```
 
 `./gradlew build` runs the tests automatically as part of `check`. The test
-JVM is pinned to Java 21 regardless of which JDK you build with (Gradle will
+JVM is pinned to Java 25 regardless of which JDK you build with (Gradle will
 auto-download one via its toolchain support if needed) — see the comments in
 `build.gradle` for why.
 
 Version history
 ----------------
+* v26.2.0
+  * Updated to Java 25 / Spigot 26.2 (Minecraft's new year.release.patch
+    versioning scheme). Switched from a vendored API jar in `lib/` to a
+    normal Gradle dependency. Prize list content unchanged except a forced
+    removal of `Material.CHAIN`, which no longer exists in 26.2 (see NOTES.md)
 * v1.21.0
   * Updated to Java 21 / Spigot 1.21, added 1.21 materials, removed reliance
     on deprecated code, migrated the build from Ant to Gradle
