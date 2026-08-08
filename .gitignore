@@ -1,6 +1,6 @@
 # Compiled class file
 *.class
-ManHunt.jar
+ManHunt*.jar
 
 # Log file
 *.log
