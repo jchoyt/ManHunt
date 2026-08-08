@@ -1,0 +1,67 @@
+plugins {
+    id 'java'
+}
+
+group = 'io.github.tejedu'
+version = '1.21.0'
+
+def jarBaseName = 'ManHunt'
+
+// Target Java 21 bytecode — the newest release both the Spigot 1.21 server
+// itself requires (Minecraft 1.20.5+ needs a Java 21+ JVM to run) and the
+// Gradle wrapper here (9.7.0) fully supports. Using --release lets any
+// modern JDK cross-compile without needing a JDK 21 toolchain
+// installed/downloaded.
+tasks.withType(JavaCompile).configureEach {
+    options.release = 21
+}
+
+// Source lives in ./src, not the Maven-standard src/main/java layout.
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        resources {
+            // plugin.yml and config.yml live at the project root and get
+            // bundled at the root of the jar, matching the old ant build.
+            srcDirs = ['.']
+            include 'plugin.yml', 'config.yml'
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        // Spigot's own repo, in case the local jar in lib/ ever needs updating.
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+    // The Spigot API is provided by the server at runtime, so it's
+    // compile-only and never bundled into the plugin jar.
+    compileOnly files('lib/spigot-api-1.21-R0.1-SNAPSHOT.jar')
+}
+
+jar {
+    archiveBaseName = jarBaseName
+    archiveVersion = version
+    // Drop the jar in the project root, matching the old ant build's output
+    // location (ManHunt-<version>.jar), instead of the default build/libs.
+    destinationDirectory = projectDir
+
+    manifest {
+        attributes(
+            'Built-By': System.getProperty('user.name'),
+            'Built-Date': new Date().format("yyyyMMdd, HHmm")
+        )
+    }
+}
+
+tasks.named('clean') {
+    delete fileTree(projectDir) {
+        include "${jarBaseName}-*.jar"
+    }
+}
