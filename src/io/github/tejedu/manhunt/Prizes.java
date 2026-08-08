@@ -803,7 +803,7 @@ public class Prizes
     public static Map<Material, Integer> prizeLimits = new HashMap<Material, Integer>();
 
     /**
-     * Prize limist are for rare, valuable objects
+     * Prize limits are for rare, valuable objects
      */
     public static void setPrizeLimits() {
         prizeLimits.put(Material.ENCHANTED_GOLDEN_APPLE, 5);

@@ -68,15 +68,16 @@ Version history
 ----------------
 * v26.2.0
   * Updated to Java 25 / Spigot 26.2 (Minecraft's new year.release.patch
-    versioning scheme). Switched from a vendored API jar in `lib/` to a
-    normal Gradle dependency. Added prizes for materials introduced since
+    versioning scheme). Migrated the build from Ant to Gradle, switching
+    from a vendored API jar in `lib/` to a normal Gradle dependency. Added
+    prizes for materials introduced since
     1.21 (copper tools/armor/spear, nautilus armor, resin, Pale Oak, Happy
     Ghast harnesses, bundles, shelves, and more); fixed the removed/renamed
     `CHAIN` material. A few of the newest 26.2-only materials are added but
     temporarily commented out pending a test-tooling update — see NOTES.md
 * v1.21.0
   * Updated to Java 21 / Spigot 1.21, added 1.21 materials, removed reliance
-    on deprecated code, migrated the build from Ant to Gradle
+    on deprecated code
 * v1.19.1
   * removed spawn eggs that slipped in with the 1.19 update
 * v1.6.03

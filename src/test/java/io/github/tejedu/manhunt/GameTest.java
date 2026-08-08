@@ -1,8 +1,6 @@
 package io.github.tejedu.manhunt;
 
 import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -119,14 +117,7 @@ class GameTest {
         assertTrue(drainOne(capturer).contains("captured"));
         assertTrue(drainOne(target).contains("captured"));
 
-        boolean gotAPrize = false;
-        for (ItemStack item : capturer.getInventory().getContents()) {
-            if (item != null && item.getType() != Material.AIR) {
-                gotAPrize = true;
-                break;
-            }
-        }
-        assertTrue(gotAPrize, "Capturer's inventory should contain the awarded prize");
+        assertTrue(TestUtil.hasAnyItem(capturer), "Capturer's inventory should contain the awarded prize");
     }
 
     @Test
@@ -141,14 +132,7 @@ class GameTest {
 
         game.survive();
 
-        boolean gotAPrize = false;
-        for (ItemStack item : target.getInventory().getContents()) {
-            if (item != null && item.getType() != Material.AIR) {
-                gotAPrize = true;
-                break;
-            }
-        }
-        assertTrue(gotAPrize, "Target's inventory should contain the survival prize");
+        assertTrue(TestUtil.hasAnyItem(target), "Target's inventory should contain the survival prize");
     }
 
     @Test
@@ -173,14 +157,7 @@ class GameTest {
 
         assertTrue(fired[0], "AfkEvent should have fired for an unverified target");
 
-        boolean gotAPrize = false;
-        for (ItemStack item : target.getInventory().getContents()) {
-            if (item != null && item.getType() != Material.AIR) {
-                gotAPrize = true;
-                break;
-            }
-        }
-        assertFalse(gotAPrize, "An unverified target shouldn't receive a survival prize");
+        assertFalse(TestUtil.hasAnyItem(target), "An unverified target shouldn't receive a survival prize");
     }
 
     @Test
@@ -195,14 +172,7 @@ class GameTest {
 
         game.survive();
 
-        boolean gotAPrize = false;
-        for (ItemStack item : target.getInventory().getContents()) {
-            if (item != null && item.getType() != Material.AIR) {
-                gotAPrize = true;
-                break;
-            }
-        }
-        assertTrue(gotAPrize, "dev.allowafk should let an unverified target still get a prize");
+        assertTrue(TestUtil.hasAnyItem(target), "dev.allowafk should let an unverified target still get a prize");
     }
 
     @Test

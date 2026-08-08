@@ -9,7 +9,18 @@ def jarBaseName = 'ManHunt'
 // plugin.yml is the single source of truth for the version — Spigot reads
 // it from there at runtime, so the jar/project version is derived from it
 // instead of being duplicated here. To bump the version, edit plugin.yml.
-version = (file('plugin.yml').readLines().find { it.startsWith('version:') } - 'version:').trim()
+// Extracted with a regex (rather than a full YAML parse) since this is the
+// project's only YAML-reading need; it copes with a trailing comment or
+// quoted value on the line, unlike a plain string-slice.
+def versionLine = file('plugin.yml').readLines().find { it.trim().startsWith('version:') }
+if (versionLine == null) {
+    throw new GradleException("plugin.yml is missing a 'version:' line")
+}
+def versionMatch = versionLine =~ /version:\s*['"]?([^'"#]+?)['"]?\s*(#.*)?$/
+if (!versionMatch) {
+    throw new GradleException("Couldn't parse a version out of plugin.yml's '${versionLine}' line")
+}
+version = versionMatch[0][1]
 
 // Target Java 25 bytecode — the newest release both the Spigot 26.2 server
 // itself requires (Minecraft 26.1+ needs a Java 25+ JVM to run) and the

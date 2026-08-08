@@ -1,9 +1,7 @@
 package io.github.tejedu.manhunt;
 
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,22 +39,13 @@ class CaptureListenerTest {
         MockBukkit.unmock();
     }
 
-    private boolean hasAnyItem(PlayerMock player) {
-        for (ItemStack item : player.getInventory().getContents()) {
-            if (item != null && item.getType() != Material.AIR) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Test
     void rightClickingTheTargetCapturesThem() {
         PlayerMock capturer = server.addPlayer("Hunter");
 
         server.getPluginManager().callEvent(new PlayerInteractEntityEvent(capturer, target));
 
-        assertTrue(hasAnyItem(capturer), "Capturer should have received a prize");
+        assertTrue(TestUtil.hasAnyItem(capturer), "Capturer should have received a prize");
     }
 
     @Test
@@ -66,7 +55,7 @@ class CaptureListenerTest {
 
         server.getPluginManager().callEvent(new PlayerInteractEntityEvent(capturer, bystander));
 
-        assertFalse(hasAnyItem(capturer), "Right-clicking a non-target shouldn't award a prize");
+        assertFalse(TestUtil.hasAnyItem(capturer), "Right-clicking a non-target shouldn't award a prize");
     }
 
     @Test
@@ -76,7 +65,7 @@ class CaptureListenerTest {
 
         server.getPluginManager().callEvent(new PlayerInteractEntityEvent(capturer, target));
 
-        assertFalse(hasAnyItem(capturer), "A player without manhunt.basic shouldn't be able to capture");
+        assertFalse(TestUtil.hasAnyItem(capturer), "A player without manhunt.basic shouldn't be able to capture");
     }
 
     @Test

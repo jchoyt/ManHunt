@@ -1,5 +1,5 @@
 plugins {
-    // Lets Gradle auto-download a JDK 21 for running tests (see build.gradle's
+    // Lets Gradle auto-download a JDK 25 for running tests (see build.gradle's
     // `test { javaLauncher }`) on machines that don't already have one installed.
     id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
 }

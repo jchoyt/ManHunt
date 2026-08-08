@@ -105,7 +105,7 @@ public class Game
         this.targetVerified = false;
         this.roundEnd = System.currentTimeMillis() + (1000L * this.plugin.getConfig().getInt("round.maxlength"));
 
-        if(!this.plugin.getConfig().getBoolean("allowafk")) {
+        if(!this.plugin.getConfig().getBoolean("dev.allowafk")) {
             this.target.sendMessage("In order to earn a prize for surviving, enter " + this.plugin.highlightColor + "/mh" + ChatColor.RESET + " into the chat.");
         }
 

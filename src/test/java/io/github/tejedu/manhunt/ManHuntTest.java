@@ -1,8 +1,6 @@
 package io.github.tejedu.manhunt;
 
 import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,15 +27,6 @@ class ManHuntTest {
     @AfterEach
     void tearDown() {
         MockBukkit.unmock();
-    }
-
-    private boolean hasAnyItem(PlayerMock player) {
-        for (ItemStack item : player.getInventory().getContents()) {
-            if (item != null && item.getType() != Material.AIR) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Test
@@ -153,7 +142,7 @@ class ManHuntTest {
         admin.performCommand("prize Lucky");
 
         assertTrue(admin.nextMessage().contains("Lucky"));
-        assertTrue(hasAnyItem(recipient), "The named player should have received a prize");
+        assertTrue(TestUtil.hasAnyItem(recipient), "The named player should have received a prize");
     }
 
     @Test
@@ -165,7 +154,7 @@ class ManHuntTest {
 
         nonAdmin.performCommand("prize Lucky");
 
-        assertFalse(hasAnyItem(recipient), "A non-admin shouldn't be able to hand out prizes");
+        assertFalse(TestUtil.hasAnyItem(recipient), "A non-admin shouldn't be able to hand out prizes");
     }
 
     @Test
