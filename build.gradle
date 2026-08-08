@@ -21,10 +21,13 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 // Source lives in ./src, not the Maven-standard src/main/java layout.
+// (Tests use the conventional src/test/java, so it's excluded here to
+// avoid main picking up test sources — srcDirs scans recursively.)
 sourceSets {
     main {
         java {
             srcDirs = ['src']
+            exclude 'test/**'
         }
         resources {
             // plugin.yml and config.yml live at the project root and get
@@ -41,12 +44,37 @@ repositories {
         // Spigot's own repo, in case the local jar in lib/ ever needs updating.
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
+    maven {
+        // Paper's repo — MockBukkit (test-only) pulls in paper-api as a
+        // snapshot dependency that isn't mirrored on Maven Central.
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
 }
 
 dependencies {
     // The Spigot API is provided by the server at runtime, so it's
     // compile-only and never bundled into the plugin jar.
     compileOnly files('lib/spigot-api-1.21-R0.1-SNAPSHOT.jar')
+
+    // MockBukkit spins up a fake server so plugin code can be unit tested
+    // without a real Minecraft server. It only provides the mock
+    // implementations (ServerMock, PlayerMock, ...); the actual org.bukkit
+    // API interfaces come transitively from a matching paper-api snapshot.
+    // Pinned to 4.0.0 (-> paper-api 1.21.1) rather than the newest MockBukkit
+    // release, which pulls a much later 1.21.11 API where some Materials
+    // used here (e.g. CHAIN) were renamed — 1.21.1 matches this plugin's
+    // actual api-version: 1.21 target far more closely.
+    testImplementation 'org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.0.0'
+    testImplementation platform('org.junit:junit-bom:5.11.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 jar {

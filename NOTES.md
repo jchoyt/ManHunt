@@ -88,6 +88,17 @@ item prize.
 | `/mhstart [seconds]` | `manhunt.admin` (default: op) | Admin: force-(re)queue a game, optionally with a custom delay. |
 | `/prize <target>` | `manhunt.admin` | Admin: manually award a random prize to an online player (bypasses the game loop — builds a throwaway `Game(this, false)`). |
 
+Both admin commands are gated **only** by their `permission:` declaration
+above — `ManHunt.onCommand()` has no in-code permission checks at all.
+Bukkit's command dispatcher reads that declaration and checks
+`sender.hasPermission(...)` itself before ever calling `onCommand`, so a
+non-admin's `/mhstart` or `/prize` never reaches the plugin's code. (An
+earlier version of `/mhstart` redundantly re-checked `manhunt.admin` inside
+`onCommand`; removed 2026-08-08 to keep enforcement in one place, matching
+`/prize`. Deliberate: if you ever add a new admin command, remember its
+enforcement lives entirely in `plugin.yml` — get that `permission:` line
+right, since there's no code-level backstop.)
+
 ## Config (`config.yml`)
 
 ```
@@ -166,10 +177,55 @@ dev.allowafk                # let AFK (unverified) targets still get survive pri
 - `.gitignore` updated to ignore `.gradle/` and `build/`; `build.xml` was
   deleted along with the (now-regenerated) Ant `build/` output dir.
 
+## Unit tests (MockBukkit, added 2026-08-08)
+
+- `src/test/java/io/github/tejedu/manhunt/` (standard `src/test/java` layout,
+  unlike main's flat `./src`) holds 4 JUnit 5 test classes, 41 tests total:
+  `PrizesTest` (pure data sanity, no mock server), `GameTest` (round setup,
+  target selection/eligibility, capture, survive verified/unverified/allowafk,
+  `getTimeLeft()` formatting), `CaptureListenerTest` (right-click capture +
+  permission gating + target-disconnect requeue), `ManHuntTest` (all four
+  commands, including that `/prize` and `/mhstart` genuinely reject non-admins
+  — `/prize` has **no in-code permission check at all**, it relies entirely on
+  `manhunt.admin` being correctly declared for it in `plugin.yml`, so this
+  test is a real regression guard, not just belt-and-suspenders).
+- Uses **[MockBukkit](https://github.com/MockBukkit/MockBukkit)**
+  (`org.mockbukkit.mockbukkit:mockbukkit-v1.21`), which fakes a whole Bukkit
+  server (`ServerMock`, `PlayerMock`, scheduler, event bus, permissions) so
+  plugin code runs close to for-real rather than against hand-mocked
+  `ItemStack`/`Location`/etc. Pinned to **version 4.0.0**, not the newest
+  release, deliberately: newer MockBukkit versions pull a much later Paper API
+  snapshot (1.21.11) where some Materials this plugin uses (e.g. `CHAIN`) were
+  renamed, breaking `Prizes`'s static initializer at runtime. 4.0.0 pulls
+  `paper-api:1.21.1-R0.1-SNAPSHOT` transitively via Gradle module metadata,
+  which matches this plugin's actual `api-version: 1.21` far more closely. If
+  bumping the MockBukkit version, check its jar's
+  `META-INF/MANIFEST.MF` `Paper-Version` attribute against what materials this
+  plugin references before assuming it's a safe upgrade.
+- The test JVM is **pinned to Java 21** (`test { javaLauncher }` in
+  `build.gradle`, with the `foojay-resolver-convention` plugin in
+  `settings.gradle` so Gradle can auto-download a JDK 21 if the machine
+  doesn't have one) — running the tests on JDK 25 hit a ByteBuddy
+  proxy-class-injection bug in MockBukkit's plugin loader (`NullPointerException:
+  No jar file selected`, from `MockBukkitConfiguredPluginClassLoader`) that
+  doesn't reproduce on 21. This is independent of the Gradle *daemon's* JDK
+  (which can be anything ≥21) — only the forked `test` task's JVM needed
+  pinning.
+- **`prizes.enchrate` gotcha**: several tests need a deterministic
+  non-enchanted prize (enchanting an `ItemStack` under MockBukkit throws
+  `NullPointerException: ...craftDelegate is null`, since MockBukkit doesn't
+  back enchantment mutation the same way a real CraftBukkit server does).
+  Setting `prizes.enchrate` to `0` is **not enough** — `Game.randomItemStack()`
+  tests `random.nextInt(100) > enchrate`, so `enchrate=0` still hits the
+  enchanted branch on a `0` roll (1% of the time) and can flake. Tests use
+  `-1` instead, which is always beaten by `nextInt(100)`'s 0–99 range.
+- Message-order gotcha in tests: a freshly-created `Game` sends the
+  server-wide "Man Hunt has started!" broadcast to the target **before** the
+  "/mh to verify" prompt — tests that read the target's queued messages via
+  `PlayerMock.nextMessage()` need to drain the broadcast first.
+
 ## Loose ends / things to check if working on this again
 
-- Untracked files in working tree: `121update.txt` (changelog, now read into
-  these notes), `ManHunt-1.21.0.jar` (build artifact), `ManHunt.code-workspace`.
 - No `endEnchantableList` — enchanted End-realm prizes can't currently be
   generated even if `includeEnd` is true and an End material is drawn.
 - Mixed license headers (MIT in `Prizes.java`, Apache 2.0 in `AfkEvent.java`)

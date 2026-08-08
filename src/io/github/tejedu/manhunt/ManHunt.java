@@ -51,12 +51,12 @@ public class ManHunt extends org.bukkit.plugin.java.JavaPlugin
         }
 
         if (cmd.getName().equalsIgnoreCase("mhstart")) {
-            if (sender.hasPermission("manhunt.admin")){
-                if ((args.length > 0) && (!args[0].replaceAll("[^0-9]", "").isEmpty())) {
-                    queueGame(Integer.parseInt(args[0]));
-                } else {
-                    queueGame();
-                }
+            // permission is enforced by plugin.yml's manhunt.admin declaration
+            // for this command - Bukkit won't dispatch here otherwise.
+            if ((args.length > 0) && (!args[0].replaceAll("[^0-9]", "").isEmpty())) {
+                queueGame(Integer.parseInt(args[0]));
+            } else {
+                queueGame();
             }
             return true;
         }

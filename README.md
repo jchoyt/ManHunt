@@ -48,6 +48,22 @@ the version is just:
 There's nothing to keep in sync in `build.gradle` — it derives its version
 from `plugin.yml` at build time.
 
+Testing
+-------
+
+The plugin is unit tested against [MockBukkit](https://github.com/MockBukkit/MockBukkit),
+which runs a fake Bukkit server in-process so game rounds, commands, and
+events can be exercised without a real Minecraft server.
+
+```sh
+./gradlew test
+```
+
+`./gradlew build` runs the tests automatically as part of `check`. The test
+JVM is pinned to Java 21 regardless of which JDK you build with (Gradle will
+auto-download one via its toolchain support if needed) — see the comments in
+`build.gradle` for why.
+
 Version history
 ----------------
 * v1.21.0
