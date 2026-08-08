@@ -522,7 +522,99 @@ public class Prizes
         Material.POTION,
         Material.POTION,
         Material.POTION,
-        Material.POTION
+        Material.POTION,
+        // Updates since 1.21 through 26.2 (best-effort curation - see NOTES.md).
+        // Sulfur and cinnabar (26.2 "Chaos Cubed" content) are commented out
+        // for now: they're real in Spigot 26.2 (verified against the actual
+        // API jar) but don't exist yet in paper-api 26.1.2, which is what
+        // MockBukkit is currently pinned to (see NOTES.md's "Unit tests"
+        // section) - referencing them breaks Prizes's static initializer at
+        // test time via NoSuchFieldError. Uncomment once MockBukkit ships a
+        // v26.2 build.
+        // Material.SULFUR,
+        // Material.SULFUR_BRICKS,
+        // Material.SULFUR_BRICK_SLAB,
+        // Material.SULFUR_BRICK_STAIRS,
+        // Material.SULFUR_BRICK_WALL,
+        // Material.SULFUR_SLAB,
+        // Material.SULFUR_STAIRS,
+        // Material.SULFUR_WALL,
+        // Material.POLISHED_SULFUR,
+        // Material.POLISHED_SULFUR_SLAB,
+        // Material.POLISHED_SULFUR_STAIRS,
+        // Material.POLISHED_SULFUR_WALL,
+        // Material.CHISELED_SULFUR,
+        // Material.POTENT_SULFUR,
+        // Material.SULFUR_SPIKE,
+        // Material.SULFUR_CUBE_BUCKET,
+        // Material.CINNABAR,
+        // Material.CINNABAR_BRICKS,
+        // Material.CINNABAR_BRICK_SLAB,
+        // Material.CINNABAR_BRICK_STAIRS,
+        // Material.CINNABAR_BRICK_WALL,
+        // Material.CINNABAR_SLAB,
+        // Material.CINNABAR_STAIRS,
+        // Material.CINNABAR_WALL,
+        // Material.POLISHED_CINNABAR,
+        // Material.POLISHED_CINNABAR_SLAB,
+        // Material.POLISHED_CINNABAR_STAIRS,
+        // Material.POLISHED_CINNABAR_WALL,
+        // Material.CHISELED_CINNABAR,
+        // Resin is from the 1.21.4 Winter Drop, present in paper-api 26.1.2 -
+        // safe to keep active.
+        Material.RESIN_BLOCK,
+        Material.RESIN_BRICK,
+        Material.RESIN_BRICKS,
+        Material.RESIN_BRICK_SLAB,
+        Material.RESIN_BRICK_STAIRS,
+        Material.RESIN_BRICK_WALL,
+        Material.CHISELED_RESIN_BRICKS,
+        Material.RESIN_CLUMP,
+        // Copper accessories/decoration (copper tools & armor went into
+        // overworldEnchantableList instead, alongside the other gear tiers)
+        Material.COPPER_CHAIN,
+        Material.COPPER_BARS,
+        Material.COPPER_CHEST,
+        Material.COPPER_LANTERN,
+        Material.COPPER_TORCH,
+        Material.COPPER_GOLEM_STATUE,
+        // weathered/exposed/oxidized/waxed variants of the above intentionally
+        // omitted, matching how plain COPPER_BLOCK's own oxidation stages were
+        // never included here either
+        // New "nautilus armor" tier (netherite variant lives in netherPrizes,
+        // matching how all other netherite gear is placed there)
+        Material.COPPER_NAUTILUS_ARMOR,
+        Material.IRON_NAUTILUS_ARMOR,
+        Material.GOLDEN_NAUTILUS_ARMOR,
+        Material.DIAMOND_NAUTILUS_ARMOR,
+        // Bundles (1.21.2) and Happy Ghast harnesses - one representative
+        // color active each, matching the CYAN_WOOL treatment above; the
+        // other 15 colors of each are omitted rather than individually
+        // listed/commented, to keep this section from ballooning
+        Material.WHITE_BUNDLE,
+        Material.WHITE_HARNESS,
+        // New wood-type furniture ("Shelf" blocks) - a couple representative
+        // types active, rest omitted for the same reason as the bundle/harness
+        // colors above
+        Material.OAK_SHELF,
+        Material.CHERRY_SHELF,
+        // Pale Oak (Pale Garden update, 1.21.4) - representative items active,
+        // doors/fences/etc. omitted like other wood types get elsewhere
+        Material.PALE_OAK_LOG,
+        Material.PALE_OAK_SAPLING,
+        Material.PALE_OAK_LEAVES,
+        // Pale Garden atmosphere/unique items
+        Material.OPEN_EYEBLOSSOM,
+        Material.CLOSED_EYEBLOSSOM,
+        Material.CREAKING_HEART,
+        Material.FIREFLY_BUSH,
+        // New music discs (matches the existing 100% pattern of every disc
+        // being active; MUSIC_DISC_BLOCKS is an old Alpha-era disc that looks
+        // to have been missed when this list was first built, not new content)
+        Material.MUSIC_DISC_BLOCKS,
+        // Material.MUSIC_DISC_BOUNCE, // 26.2-only, see the sulfur/cinnabar note above
+        Material.MUSIC_DISC_LAVA_CHICKEN,
+        Material.MUSIC_DISC_TEARS
     );
 
     public static List<Material> netherPrizes = (List<Material>)Arrays.asList(
@@ -533,9 +625,7 @@ public class Prizes
         Material.BLAZE_POWDER,
         Material.BLAZE_ROD,
         Material.BREWING_STAND,
-        // TODO: CHAIN was removed/renamed by Spigot 26.2 (likely replaced by
-        // IRON_CHAIN, part of a new copper-chain block family) - deferred to
-        // the separate prize-list content update pass.
+        Material.IRON_CHAIN, // replaces the removed/renamed CHAIN material
         Material.CHISELED_NETHER_BRICKS,
         Material.CHISELED_POLISHED_BLACKSTONE,
         Material.COMPARATOR,
@@ -597,10 +687,13 @@ public class Prizes
         // 1.20
         // Material.CRIMSON_HANGING_SIGN,
         // Material.CRIMSON_WALL_HANGING_SIGN,
-        Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE
-        // Material.WARPED_HANGING_SIGN
-        // Material.WARPED_WALL_HANGING_SIGN
-
+        Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE,
+        // Material.WARPED_HANGING_SIGN,
+        // Material.WARPED_WALL_HANGING_SIGN,
+        // Updates since 1.21 through 26.2 (best-effort curation - see NOTES.md)
+        Material.DRIED_GHAST,
+        Material.NETHERITE_HORSE_ARMOR,
+        Material.NETHERITE_NAUTILUS_ARMOR
     );
 
     public static List<Material> endPrizes = (List<Material>)Arrays.asList(
@@ -643,6 +736,17 @@ public class Prizes
         Material.CHAINMAIL_CHESTPLATE,
         Material.CHAINMAIL_HELMET,
         Material.CHAINMAIL_LEGGINGS,
+        // Copper tools/armor (added since 1.21, "Copper Golem"-era update)
+        Material.COPPER_AXE,
+        Material.COPPER_BOOTS,
+        Material.COPPER_CHESTPLATE,
+        Material.COPPER_HELMET,
+        Material.COPPER_HOE,
+        Material.COPPER_LEGGINGS,
+        Material.COPPER_PICKAXE,
+        Material.COPPER_SHOVEL,
+        Material.COPPER_SPEAR,
+        Material.COPPER_SWORD,
         Material.DIAMOND_AXE,
         Material.DIAMOND_BOOTS,
         Material.DIAMOND_CHESTPLATE,
@@ -651,6 +755,7 @@ public class Prizes
         Material.DIAMOND_LEGGINGS,
         Material.DIAMOND_PICKAXE,
         Material.DIAMOND_SHOVEL,
+        Material.DIAMOND_SPEAR,
         Material.DIAMOND_SWORD,
         Material.FISHING_ROD,
         Material.FLINT_AND_STEEL,
@@ -661,6 +766,7 @@ public class Prizes
         Material.GOLDEN_LEGGINGS,
         Material.GOLDEN_PICKAXE,
         Material.GOLDEN_SHOVEL,
+        Material.GOLDEN_SPEAR,
         Material.GOLDEN_SWORD,
         Material.IRON_AXE,
         Material.IRON_BOOTS,
@@ -670,11 +776,15 @@ public class Prizes
         Material.IRON_LEGGINGS,
         Material.IRON_PICKAXE,
         Material.IRON_SHOVEL,
+        Material.IRON_SPEAR,
         Material.IRON_SWORD,
         Material.MACE,
         Material.SHIELD,
         Material.SHEARS,
         Material.TRIDENT
+        // WOODEN_SPEAR / STONE_SPEAR intentionally omitted, matching how
+        // wooden/stone tiers of every other tool/weapon are already excluded
+        // from this list
     );
 
     public static List<Material> netherEnchantableList = (List<Material>)Arrays.asList(
@@ -686,11 +796,15 @@ public class Prizes
         Material.NETHERITE_LEGGINGS,
         Material.NETHERITE_PICKAXE,
         Material.NETHERITE_SHOVEL,
+        Material.NETHERITE_SPEAR,
         Material.NETHERITE_SWORD
     );
 
     public static Map<Material, Integer> prizeLimits = new HashMap<Material, Integer>();
 
+    /**
+     * Prize limist are for rare, valuable objects
+     */
     public static void setPrizeLimits() {
         prizeLimits.put(Material.ENCHANTED_GOLDEN_APPLE, 5);
         prizeLimits.put(Material.NETHER_STAR, 3);
@@ -737,8 +851,13 @@ public class Prizes
         prizeLimits.put(Material.WARD_ARMOR_TRIM_SMITHING_TEMPLATE,1);
         prizeLimits.put(Material.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE,1);
         prizeLimits.put(Material.WILD_ARMOR_TRIM_SMITHING_TEMPLATE,1);
-        //1.21 
+        //1.21
         prizeLimits.put(Material.HEAVY_CORE,2);
+        // Updates since 1.21 through 26.2
+        prizeLimits.put(Material.COPPER_GOLEM_STATUE,3);
+        prizeLimits.put(Material.CREAKING_HEART,3);
+        prizeLimits.put(Material.DRIED_GHAST,3);
+
 
     }
 }

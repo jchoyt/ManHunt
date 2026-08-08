@@ -68,12 +68,9 @@ item prize.
 - Config `prizes.includeOverworld/includeNether/includeEnd` toggles which
   realm's prize pool is active (End material list exists but there's no
   `endEnchantableList`, so enchanted End prizes aren't currently possible).
-- `netherPrizes` is missing an entry for `CHAIN` (removed/renamed in Spigot
-  26.2, likely replaced by `IRON_CHAIN` as part of a new copper-chain block
-  family — see the `// TODO` at that spot in `Prizes.java`) — a forced
-  compile fix from the 26.2 migration, not a deliberate content change. The
-  broader prize-list content update (adding new 26.x materials, fixing this
-  gap properly) is intentionally deferred to a separate pass.
+- `netherPrizes` has `Material.IRON_CHAIN` in place of the old `CHAIN`
+  material, which Spigot 26.2 removed/renamed as part of a new copper-chain
+  block family (see "Prize list content update for 26.2" below).
 - `prizes.enchrate` (%) chance the prize is an enchanted item instead of a
   plain one.
   - Plain items: random amount from the curated list; amount is
@@ -262,11 +259,64 @@ still present: `~/.claude/plans/sorted-coalescing-hanrahan.md`.
   one-drop-behind gap didn't turn out to cause any observed friction in
   practice, contrary to the caution flagged when this was planned.
 
+## Prize list content update for 26.2 (2026-08-08)
+
+Follow-up to the Spigot 26.2 migration above, which deliberately left the
+prize list's content untouched. This pass adds the new materials introduced
+between 1.21.0 and 26.2 to `Prizes.java`, following the file's established
+pattern of a version-labeled trailing block per list plus curated
+`prizeLimits` entries.
+
+**Important caveat on confidence**: my training knowledge is solid through
+roughly the "Happy Ghast / Copper Golem" era (~1.21.6), but 26.1 and 26.2
+released after that cutoff. Everything added is a *real* material — verified
+against the actual API jars, not invented — but which specific update each
+one shipped in, and how "fun" it actually is as a random prize, is inference
+from material names rather than first-hand game knowledge. Treat this as a
+first-pass draft for review, not a final call.
+
+- Fixed the `CHAIN` gap from the Spigot migration: `netherPrizes` now has
+  `Material.IRON_CHAIN` in its place.
+- Added, roughly by theme: copper tools/armor/spear (→
+  `overworldEnchantableList`, alongside the other gear tiers;
+  `NETHERITE_SPEAR` → `netherEnchantableList`); copper accessories/decor
+  (chain, bars, chest, lantern, torch, golem statue); a new "nautilus armor"
+  tier (→ `overworldPrizes`, netherite variant → `netherPrizes`, matching
+  where other netherite gear lives); Resin family (1.21.4 Winter Drop);
+  Pale Oak wood set + Pale Garden atmosphere items (`OPEN_EYEBLOSSOM`,
+  `CLOSED_EYEBLOSSOM`, `CREAKING_HEART`, `FIREFLY_BUSH`); Bundles (1.21.2)
+  and Happy Ghast harnesses (one representative color active each, matching
+  the existing `CYAN_WOOL` treatment — the other 15 colors of each are
+  omitted rather than individually listed, to avoid a huge low-value diff);
+  new wood-type "Shelf" furniture blocks (two representative types active);
+  `DRIED_GHAST` and `NETHERITE_HORSE_ARMOR` (→ `netherPrizes`); new music
+  discs, including `MUSIC_DISC_BLOCKS` — an old Alpha-era disc that looks to
+  have been missed when the file was first built, not new content, but it
+  now matches the established 100%-of-discs-active pattern.
+- **Deferred (commented out) for a real, mechanical reason, not content
+  judgment**: `Material.SULFUR`/`CINNABAR` families (~29 materials) and
+  `MUSIC_DISC_BOUNCE` are genuinely exclusive to 26.2 — verified against
+  the real API jar — but don't exist in `paper-api:26.1.2`, which is what
+  MockBukkit's test double is pinned to (see "Unit tests" above). Referencing
+  them breaks `Prizes`'s static initializer at test time with
+  `NoSuchFieldError`. They compile and would work fine in the actual shipped
+  jar; they're commented out purely so the test suite stays green until
+  MockBukkit ships a `v26.2` build. Search `Prizes.java` for "26.2-only" to
+  find and uncomment them once that happens.
+- Verified every material name used anywhere in `Prizes.java` (699 unique
+  references) against the real 26.2 API jar directly — zero typos, zero
+  unresolvable references (beyond the intentionally-deferred ones above).
+  `PrizesTest`'s existing sanity checks (no nulls, no unintentional
+  duplicates, limits positive) all still pass unmodified.
+
 ## Loose ends / things to check if working on this again
 
-- `Prizes.java`'s `netherPrizes` is missing a `CHAIN` replacement (see
-  "Spigot 26.2 migration" above) — the broader prize-list content update for
-  new 26.x materials is a separate, not-yet-scheduled pass.
+- The sulfur/cinnabar materials and `MUSIC_DISC_BOUNCE` commented out above —
+  uncomment once MockBukkit ships `v26.2` support (search for "26.2-only").
+- This prize-list update is a first-pass curation (see caveat above) —
+  worth a proper in-game/gameplay review of what got included vs. excluded,
+  especially the "pick one representative color/variant" calls for bundles,
+  harnesses, and shelves.
 - No `endEnchantableList` — enchanted End-realm prizes can't currently be
   generated even if `includeEnd` is true and an End material is drawn.
 - Mixed license headers (MIT in `Prizes.java`, Apache 2.0 in `AfkEvent.java`)
