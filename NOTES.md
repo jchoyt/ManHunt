@@ -14,7 +14,7 @@ item prize.
 - Main class: `ManHunt` (extends `JavaPlugin`)
 - Author: jchoyt (github) / Entomo (minecraft)
 - Repo: https://github.com/jchoyt/ManHunt
-- Current version: **1.21.0** (targets Minecraft/Spigot API 1.21, Java 17)
+- Current version: **1.21.0** (targets Minecraft/Spigot API 1.21, Java 21)
 - Built with **Gradle** (via the wrapper — `./gradlew build`), compiling
   against `lib/spigot-api-1.21-R0.1-SNAPSHOT.jar` (compile-only; not bundled)
   → produces `ManHunt-<version>.jar` in the project root, bundling
@@ -150,9 +150,14 @@ dev.allowafk                # let AFK (unverified) targets still get survive pri
   Spigot's own repo (hub.spigotmc.org) are declared in `repositories{}` for
   future dependency additions/API jar upgrades, though nothing currently
   resolves from them.
-- `jar` task output: base name `ManHunt`, version `1.21.0`, written to the
-  **project root** (not the Gradle-default `build/libs/`) to match the old
-  Ant behavior — i.e. `./ManHunt-1.21.0.jar`.
+- `jar` task output: base name `ManHunt`, written to the **project root**
+  (not the Gradle-default `build/libs/`) to match the old Ant behavior —
+  i.e. `./ManHunt-<version>.jar`.
+- **Version number**: `plugin.yml`'s `version:` field is the single source
+  of truth — `build.gradle` reads it at build time
+  (`file('plugin.yml').readLines().find { it.startsWith('version:') }`)
+  rather than duplicating it. To bump the version, edit `plugin.yml` only;
+  see README's "Setting the version number" section.
 - Common commands:
   - `./gradlew build` — compile + assemble + run checks (also verified this
     works with the box's default JDK 25 with no `JAVA_HOME` override needed).

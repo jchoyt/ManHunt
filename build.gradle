@@ -3,9 +3,13 @@ plugins {
 }
 
 group = 'io.github.tejedu'
-version = '1.21.0'
 
 def jarBaseName = 'ManHunt'
+
+// plugin.yml is the single source of truth for the version — Spigot reads
+// it from there at runtime, so the jar/project version is derived from it
+// instead of being duplicated here. To bump the version, edit plugin.yml.
+version = (file('plugin.yml').readLines().find { it.startsWith('version:') } - 'version:').trim()
 
 // Target Java 21 bytecode — the newest release both the Spigot 1.21 server
 // itself requires (Minecraft 1.20.5+ needs a Java 21+ JVM to run) and the

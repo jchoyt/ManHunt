@@ -1,4 +1,58 @@
+ManHunt
+=======
+
+A Spigot/Bukkit plugin that runs a game of ManHunt with prizes.
+
+Each round, one online player (in Survival mode) is secretly picked as the
+**target**. Everyone else races to find and right-click the target before
+time runs out. Whoever captures the target — or the target itself, if it
+survives the round and confirms it isn't AFK via `/mh` — wins a randomized
+prize (a curated Minecraft item, sometimes enchanted, sometimes a potion
+with a real effect).
+
+Commands: `/mh`, `/mhtarget`, `/mhstart [seconds]` (admin), `/prize <target>`
+(admin). Round timing, minimum players, and the prize pool are all
+configurable in `config.yml`.
+
+Building
+--------
+
+The project builds with [Gradle](https://gradle.org/), via the included
+wrapper — you don't need Gradle installed, just a JDK.
+
+```sh
+./gradlew build
+```
+
+This compiles the plugin against the Spigot API jar in `lib/` and produces
+`ManHunt-<version>.jar` in the project root, ready to drop into a server's
+`plugins/` folder.
+
+Other useful tasks:
+
+```sh
+./gradlew jar     # just build the plugin jar, skip checks
+./gradlew clean    # remove build/ and the root ManHunt-*.jar
+```
+
+### Setting the version number
+
+The plugin's version lives in one place: the `version:` field in
+[`plugin.yml`](plugin.yml). The Gradle build reads it from there, so bumping
+the version is just:
+
+1. Edit `version:` in `plugin.yml`.
+2. Run `./gradlew build` — the output jar name picks up the new version
+   automatically (e.g. `ManHunt-1.22.0.jar`).
+
+There's nothing to keep in sync in `build.gradle` — it derives its version
+from `plugin.yml` at build time.
+
 Version history
+----------------
+* v1.21.0
+  * Updated to Java 21 / Spigot 1.21, added 1.21 materials, removed reliance
+    on deprecated code, migrated the build from Ant to Gradle
 * v1.19.1
   * removed spawn eggs that slipped in with the 1.19 update
 * v1.6.03
