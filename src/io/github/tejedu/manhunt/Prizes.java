@@ -615,6 +615,78 @@ public class Prizes
         // Material.MUSIC_DISC_BOUNCE, // 26.2-only, see the sulfur/cinnabar note above
         Material.MUSIC_DISC_LAVA_CHICKEN,
         Material.MUSIC_DISC_TEARS
+        // Speculative: Minecraft 26.3 / "Dappled Forest" (Third Drop 2026) -
+        // NOT YET RELEASED as of 2026-08-31. Mojang is targeting a September
+        // 2026 stable release; as of this writing spigot-api's snapshot repo
+        // and PaperMC's paper-api repo have published nothing past 26.2 - no
+        // 26.3 API artifact exists to compile or verify against. Unlike every
+        // other entry in this file, the names below are inferred from public
+        // snapshot patch notes (snapshots 1-10, see
+        // https://minecraft.wiki/w/Java_Edition_26.3) plus Bukkit's
+        // established Material-naming conventions, NOT diffed against a real
+        // API jar. Snapshot content routinely gets renamed, reworked, or cut
+        // before a stable release - treat every name here as unverified.
+        // Entirely commented out for that reason (and because spigot-api has
+        // nothing to compile these against yet regardless). Before
+        // uncommenting: get a real 26.3 spigot-api build, re-verify every
+        // name below against it the same way 26.2's list was (see NOTES.md's
+        // "Prize list content update for 26.2"), and pick real prizeLimits
+        // for anything that should be capped.
+        //
+        // Poplar wood set (new wood type, Dappled Forest biome)
+        // Material.POPLAR_LOG,
+        // Material.STRIPPED_POPLAR_LOG,
+        // Material.POPLAR_WOOD,
+        // Material.STRIPPED_POPLAR_WOOD,
+        // Material.POPLAR_PLANKS,
+        // Material.POPLAR_STAIRS,
+        // Material.POPLAR_SLAB,
+        // Material.POPLAR_SIGN,
+        // Material.POPLAR_HANGING_SIGN,
+        // Material.POPLAR_BUTTON,
+        // Material.POPLAR_PRESSURE_PLATE,
+        // Material.POPLAR_DOOR,
+        // Material.POPLAR_FENCE,
+        // Material.POPLAR_FENCE_GATE,
+        // Material.POPLAR_TRAPDOOR,
+        // Material.POPLAR_SHELF, // matches the OAK_SHELF/CHERRY_SHELF furniture precedent above
+        // Material.POPLAR_BOAT,
+        // Material.POPLAR_CHEST_BOAT,
+        // Material.POPLAR_SAPLING,
+        // Material.RED_POPLAR_LEAVES,
+        // Material.ORANGE_POPLAR_LEAVES,
+        // Material.YELLOW_POPLAR_LEAVES,
+        // Dappled Forest flora - naming is a guess; "shelf mushroom" in
+        // particular may turn out to be scenery baked into poplar tree
+        // generation rather than a standalone obtainable item, in which case
+        // it has no Material at all
+        // Material.RED_SHRUB,
+        // Material.SHELF_MUSHROOM,
+        // Wool stairs/slabs (16 colors each) - one representative color
+        // active, matching the CYAN_WOOL treatment earlier in this list; the
+        // other 15 of each are omitted rather than individually listed
+        // Material.CYAN_WOOL_STAIRS,
+        // Material.CYAN_WOOL_SLAB,
+        // Concrete stairs/slabs (16 colors each) - same one-representative-
+        // color approach, matching the WHITE_BUNDLE/WHITE_HARNESS treatment
+        // above; note plain CONCRETE itself was never in this list to begin
+        // with (an existing gap, not something introduced by 26.3)
+        // Material.WHITE_CONCRETE_STAIRS,
+        // Material.WHITE_CONCRETE_SLAB,
+        // Cushions (16 colors, sit-on furniture) - one representative color,
+        // same reasoning as above
+        // Material.WHITE_CUSHION,
+        // Straw Bed - single-use, destroyed after sleeping, can't be used in
+        // the Nether/End. New standalone item; note ordinary colored beds
+        // aren't in this list at all (an existing, apparently deliberate
+        // exclusion) - worth deciding whether a one-time throwaway item fits
+        // this list's spirit before enabling it
+        // Material.STRAW_BED,
+        // Deliberately excluded: Abandoned Camp / structure treasure maps
+        // (Buried Ancient City, Buried Mineshaft, Desert Pyramid, Warm Ocean
+        // Ruins, etc.) - these are FILLED_MAP instances with embedded
+        // location data, not plain obtainable Materials, so they don't fit
+        // this list's model at all (same reason ordinary maps aren't here)
     );
 
     public static List<Material> netherPrizes = (List<Material>)Arrays.asList(

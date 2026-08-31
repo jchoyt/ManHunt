@@ -309,10 +309,47 @@ first-pass draft for review, not a final call.
   `PrizesTest`'s existing sanity checks (no nulls, no unintentional
   duplicates, limits positive) all still pass unmodified.
 
+## Speculative 26.3 prize entries (2026-08-31)
+
+Added a commented-out block to the end of `overworldPrizes` for Minecraft
+26.3 ("Dappled Forest", unofficially Third Drop 2026) — poplar wood set
+(logs/planks/stairs/slab/signs/button/pressure plate/door/fence/fence
+gate/trapdoor/shelf/boats/sapling/leaves), red shrub, shelf mushroom, one
+representative color each of the new wool stairs/slabs, concrete
+stairs/slabs, and cushions (16 colors each), and straw bed.
+
+**This is explicitly unverified, unlike everything else in `Prizes.java`.**
+26.3 has not shipped as of this writing — Mojang is targeting September
+2026, and as of 2026-08-31 neither `hub.spigotmc.org`'s snapshot repo nor
+`repo.papermc.io` have any 26.3 artifact (`spigot-api` tops out at
+`26.2-R0.1-SNAPSHOT`, `paper-api` at `26.2.build.121-stable`) — there's no
+real API to compile or diff against yet, unlike the careful jar-diffing done
+for the 26.2 update above. Material names were inferred from public
+snapshot patch notes (snapshots 1–10,
+https://minecraft.wiki/w/Java_Edition_26.3) plus this project's established
+Bukkit-naming conventions, not confirmed. Snapshot content routinely gets
+renamed, reworked, or cut before a stable release, so treat every name in
+that block as a guess pending verification.
+
+Deliberately excluded from that block: Abandoned Camp / structure treasure
+maps (`FILLED_MAP` instances with embedded location data, not plain
+obtainable Materials — same reason ordinary maps were never in this list).
+
+**Do not uncomment any of it** until: a real 26.3 `spigot-api` build exists,
+every name is re-verified against that real jar (same process as "Prize
+list content update for 26.2" above), and `prizeLimits` entries are chosen
+for anything that should be capped. Also worth a call at that point on
+whether `STRAW_BED` (a one-time-use throwaway item) fits this list's
+spirit — ordinary colored beds were never added here either, which reads
+like a deliberate exclusion rather than an oversight.
+
 ## Loose ends / things to check if working on this again
 
 - The sulfur/cinnabar materials and `MUSIC_DISC_BOUNCE` commented out above —
   uncomment once MockBukkit ships `v26.2` support (search for "26.2-only").
+- The whole 26.3 block (search for "Speculative: Minecraft 26.3") is
+  unverified guesswork pending a real 26.3 API release — re-verify against
+  a real jar before uncommenting anything, per the section above.
 - This prize-list update is a first-pass curation (see caveat above) —
   worth a proper in-game/gameplay review of what got included vs. excluded,
   especially the "pick one representative color/variant" calls for bundles,
