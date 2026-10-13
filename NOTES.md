@@ -21,8 +21,7 @@ item prize.
   from Spigot's snapshot repo; not bundled) → produces `ManHunt-<version>.jar`
   in the project root, bundling `plugin.yml` and `config.yml`. (Migrated from
   Ant's `build.xml` on 2026-08-07 — see "Build system" below.)
-- License: MIT (Prizes.java header) / Apache 2.0 (AfkEvent.java header) —
-  mixed headers, `LICENSE` file at repo root is the authoritative one to check.
+- License: MIT (`LICENSE` file at repo root; MIT headers in `Prizes.java` and `AfkEvent.java`).
 
 ## Game flow
 
@@ -356,5 +355,4 @@ like a deliberate exclusion rather than an oversight.
   harnesses, and shelves.
 - No `endEnchantableList` — enchanted End-realm prizes can't currently be
   generated even if `includeEnd` is true and an End material is drawn.
-- Mixed license headers (MIT in `Prizes.java`, Apache 2.0 in `AfkEvent.java`)
-  vs. root `LICENSE` — worth reconciling if this ever gets republished.
+- License headers reconciled to MIT across all source files (`Prizes.java`, `AfkEvent.java`) and root `LICENSE`.

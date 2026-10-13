@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Jeffrey C. Hoyt. Released under the Aapache 2.0 license
+ * Copyright 2018 Jeffrey C. Hoyt. Released under the terms of the MIT license.
  */
 
  package io.github.tejedu.manhunt;
