@@ -344,8 +344,7 @@ like a deliberate exclusion rather than an oversight.
 
 ## Loose ends / things to check if working on this again
 
-- The sulfur/cinnabar materials and `MUSIC_DISC_BOUNCE` commented out above —
-  uncomment once MockBukkit ships `v26.2` support (search for "26.2-only").
+- The sulfur/cinnabar materials and `MUSIC_DISC_BOUNCE` were restored and uncommented once MockBukkit updated to `mockbukkit-v26.2:4.117.0` (with `paper-api:26.2.build.133-stable`).
 - The whole 26.3 block (search for "Speculative: Minecraft 26.3") is
   unverified guesswork pending a real 26.3 API release — re-verify against
   a real jar before uncommenting anything, per the section above.

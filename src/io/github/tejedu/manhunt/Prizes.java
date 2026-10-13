@@ -524,42 +524,36 @@ public class Prizes
         Material.POTION,
         Material.POTION,
         // Updates since 1.21 through 26.2 (best-effort curation - see NOTES.md).
-        // Sulfur and cinnabar (26.2 "Chaos Cubed" content) are commented out
-        // for now: they're real in Spigot 26.2 (verified against the actual
-        // API jar) but don't exist yet in paper-api 26.1.2, which is what
-        // MockBukkit is currently pinned to (see NOTES.md's "Unit tests"
-        // section) - referencing them breaks Prizes's static initializer at
-        // test time via NoSuchFieldError. Uncomment once MockBukkit ships a
-        // v26.2 build.
-        // Material.SULFUR,
-        // Material.SULFUR_BRICKS,
-        // Material.SULFUR_BRICK_SLAB,
-        // Material.SULFUR_BRICK_STAIRS,
-        // Material.SULFUR_BRICK_WALL,
-        // Material.SULFUR_SLAB,
-        // Material.SULFUR_STAIRS,
-        // Material.SULFUR_WALL,
-        // Material.POLISHED_SULFUR,
-        // Material.POLISHED_SULFUR_SLAB,
-        // Material.POLISHED_SULFUR_STAIRS,
-        // Material.POLISHED_SULFUR_WALL,
-        // Material.CHISELED_SULFUR,
-        // Material.POTENT_SULFUR,
-        // Material.SULFUR_SPIKE,
-        // Material.SULFUR_CUBE_BUCKET,
-        // Material.CINNABAR,
-        // Material.CINNABAR_BRICKS,
-        // Material.CINNABAR_BRICK_SLAB,
-        // Material.CINNABAR_BRICK_STAIRS,
-        // Material.CINNABAR_BRICK_WALL,
-        // Material.CINNABAR_SLAB,
-        // Material.CINNABAR_STAIRS,
-        // Material.CINNABAR_WALL,
-        // Material.POLISHED_CINNABAR,
-        // Material.POLISHED_CINNABAR_SLAB,
-        // Material.POLISHED_CINNABAR_STAIRS,
-        // Material.POLISHED_CINNABAR_WALL,
-        // Material.CHISELED_CINNABAR,
+        // Sulfur and cinnabar (26.2 "Chaos Cubed" content).
+        Material.SULFUR,
+        Material.SULFUR_BRICKS,
+        Material.SULFUR_BRICK_SLAB,
+        Material.SULFUR_BRICK_STAIRS,
+        Material.SULFUR_BRICK_WALL,
+        Material.SULFUR_SLAB,
+        Material.SULFUR_STAIRS,
+        Material.SULFUR_WALL,
+        Material.POLISHED_SULFUR,
+        Material.POLISHED_SULFUR_SLAB,
+        Material.POLISHED_SULFUR_STAIRS,
+        Material.POLISHED_SULFUR_WALL,
+        Material.CHISELED_SULFUR,
+        Material.POTENT_SULFUR,
+        Material.SULFUR_SPIKE,
+        Material.SULFUR_CUBE_BUCKET,
+        Material.CINNABAR,
+        Material.CINNABAR_BRICKS,
+        Material.CINNABAR_BRICK_SLAB,
+        Material.CINNABAR_BRICK_STAIRS,
+        Material.CINNABAR_BRICK_WALL,
+        Material.CINNABAR_SLAB,
+        Material.CINNABAR_STAIRS,
+        Material.CINNABAR_WALL,
+        Material.POLISHED_CINNABAR,
+        Material.POLISHED_CINNABAR_SLAB,
+        Material.POLISHED_CINNABAR_STAIRS,
+        Material.POLISHED_CINNABAR_WALL,
+        Material.CHISELED_CINNABAR,
         // Resin is from the 1.21.4 Winter Drop, present in paper-api 26.1.2 -
         // safe to keep active.
         Material.RESIN_BLOCK,
@@ -612,7 +606,7 @@ public class Prizes
         // being active; MUSIC_DISC_BLOCKS is an old Alpha-era disc that looks
         // to have been missed when this list was first built, not new content)
         Material.MUSIC_DISC_BLOCKS,
-        // Material.MUSIC_DISC_BOUNCE, // 26.2-only, see the sulfur/cinnabar note above
+        Material.MUSIC_DISC_BOUNCE,
         Material.MUSIC_DISC_LAVA_CHICKEN,
         Material.MUSIC_DISC_TEARS
         // Speculative: Minecraft 26.3 / "Dappled Forest" (Third Drop 2026) -

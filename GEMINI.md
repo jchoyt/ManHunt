@@ -110,8 +110,8 @@ When Minecraft/Spigot 26.3 ships:
 6. Set `prizeLimits` for capped items.
 7. Resolve open question: whether `STRAW_BED` (single-use item) belongs in the prize pool (colored beds were historically excluded).
 
-### 2. 26.2 Deferred Materials
-In `Prizes.java`, sulfur/cinnabar materials (~29 items) and `MUSIC_DISC_BOUNCE` are commented out because `paper-api:26.1.2` used by MockBukkit throws `NoSuchFieldError`. Uncomment them once MockBukkit updates to 26.2+.
+### 2. 26.2 Deferred Materials (Completed)
+MockBukkit was updated to `mockbukkit-v26.2:4.117.0` and `paper-api:26.2.build.133-stable`. The sulfur/cinnabar materials (~29 items) and `MUSIC_DISC_BOUNCE` in `Prizes.java` have been uncommented and verified via unit tests.
 
 ### 3. Missing Realm Lists & Minor Cleanups
 - **End Realm**: `endPrizes` exists, but there is no `endEnchantableList`. If End prizes are enabled and an enchantable End item is drawn, enchanted variant generation is bypassed.
