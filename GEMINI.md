@@ -9,7 +9,7 @@ ManHunt is a Spigot/Bukkit plugin for Minecraft (Java) running a "ManHunt" minig
 - **Package**: `io.github.tejedu.manhunt`
 - **Main class**: `ManHunt` (extends `JavaPlugin`)
 - **Author**: jchoyt (GitHub) / Entomo (Minecraft)
-- **Current version**: `26.2.0` (targets Minecraft/Spigot API 26.2, Java 25)
+- **Current version**: `26.3.0` (targets Minecraft/Spigot API 26.3, Java 25)
 - **Build tool**: Gradle via wrapper (`./gradlew`)
 - **Output**: `ManHunt-<version>.jar` placed directly in the project root.
 
@@ -100,15 +100,12 @@ JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64 ./gradlew test
 
 ## Follow-up Tasks & Loose Ends
 
-### 1. Minecraft/Spigot 26.3 Update ("Dappled Forest")
-When Minecraft/Spigot 26.3 ships:
-1. Verify `org.spigotmc:spigot-api:26.3-R0.1-SNAPSHOT` exists in Spigot's snapshot repo.
-2. Bump `api-version: 26.3` and version in `plugin.yml`. Update `build.gradle` dependency.
-3. Review the commented-out speculative 26.3 block at the end of `overworldPrizes` in `Prizes.java` (`poplar` set, `red shrub`, `shelf mushroom`, wool/concrete stairs/slabs, cushions, straw bed).
-4. Re-verify every material against the real 26.3 jar.
-5. Check MockBukkit 26.3 support. If MockBukkit is behind, defer materials that cause `NoSuchFieldError` in tests.
-6. Set `prizeLimits` for capped items.
-7. Resolve open question: whether `STRAW_BED` (single-use item) belongs in the prize pool (colored beds were historically excluded).
+### 1. Minecraft/Spigot 26.3 Update ("Dappled Forest") (Completed)
+- `spigot-api:26.3-R0.1-SNAPSHOT` configured in `build.gradle`.
+- `version: 26.3.0` and `api-version: 26.3` updated in `plugin.yml`.
+- All 26.3 materials (poplar set, red shrub, shelf mushroom, wool/concrete stairs/slabs, cushions, straw bed) verified against official `spigot-api:26.3-R0.1-SNAPSHOT` jar.
+- Materials remain commented out in `Prizes.java` until MockBukkit releases `mockbukkit-v26.3` (running with `mockbukkit-v26.2` throws `NoSuchFieldError` on missing enum constants).
+- Open question remaining for when MockBukkit 26.3 arrives: whether `STRAW_BED` (single-use item) belongs in the prize pool (colored beds were historically excluded) and assigning `prizeLimits`.
 
 ### 2. 26.2 Deferred Materials (Completed)
 MockBukkit was updated to `mockbukkit-v26.2:4.117.0` and `paper-api:26.2.build.133-stable`. The sulfur/cinnabar materials (~29 items) and `MUSIC_DISC_BOUNCE` in `Prizes.java` have been uncommented and verified via unit tests.

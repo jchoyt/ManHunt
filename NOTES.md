@@ -14,10 +14,10 @@ item prize.
 - Main class: `ManHunt` (extends `JavaPlugin`)
 - Author: jchoyt (github) / Entomo (minecraft)
 - Repo: https://github.com/jchoyt/ManHunt
-- Current version: **26.2.0** (targets Minecraft/Spigot API 26.2, Java 25 —
-  see "Spigot 26.2 migration" below)
+- Current version: **26.3.0** (targets Minecraft/Spigot API 26.3, Java 25 —
+  see "Spigot 26.3 upgrade" below)
 - Built with **Gradle** (via the wrapper — `./gradlew build`), compiling
-  against `org.spigotmc:spigot-api:26.2-R0.1-SNAPSHOT` (compile-only, resolved
+  against `org.spigotmc:spigot-api:26.3-R0.1-SNAPSHOT` (compile-only, resolved
   from Spigot's snapshot repo; not bundled) → produces `ManHunt-<version>.jar`
   in the project root, bundling `plugin.yml` and `config.yml`. (Migrated from
   Ant's `build.xml` on 2026-08-07 — see "Build system" below.)
@@ -308,50 +308,31 @@ first-pass draft for review, not a final call.
   `PrizesTest`'s existing sanity checks (no nulls, no unintentional
   duplicates, limits positive) all still pass unmodified.
 
-## Speculative 26.3 prize entries (2026-08-31)
+## Spigot 26.3 upgrade & prize entries (2026-10)
 
-Added a commented-out block to the end of `overworldPrizes` for Minecraft
-26.3 ("Dappled Forest", unofficially Third Drop 2026) — poplar wood set
-(logs/planks/stairs/slab/signs/button/pressure plate/door/fence/fence
-gate/trapdoor/shelf/boats/sapling/leaves), red shrub, shelf mushroom, one
-representative color each of the new wool stairs/slabs, concrete
-stairs/slabs, and cushions (16 colors each), and straw bed.
+Updated project to Spigot API 26.3 (`org.spigotmc:spigot-api:26.3-R0.1-SNAPSHOT`)
+and bumped plugin version to `26.3.0`.
 
-**This is explicitly unverified, unlike everything else in `Prizes.java`.**
-26.3 has not shipped as of this writing — Mojang is targeting September
-2026, and as of 2026-08-31 neither `hub.spigotmc.org`'s snapshot repo nor
-`repo.papermc.io` have any 26.3 artifact (`spigot-api` tops out at
-`26.2-R0.1-SNAPSHOT`, `paper-api` at `26.2.build.121-stable`) — there's no
-real API to compile or diff against yet, unlike the careful jar-diffing done
-for the 26.2 update above. Material names were inferred from public
-snapshot patch notes (snapshots 1–10,
-https://minecraft.wiki/w/Java_Edition_26.3) plus this project's established
-Bukkit-naming conventions, not confirmed. Snapshot content routinely gets
-renamed, reworked, or cut before a stable release, so treat every name in
-that block as a guess pending verification.
+All 26.3 materials in the commented-out block at the end of `overworldPrizes`
+(poplar wood set, red shrub, shelf mushroom, cyan wool stairs/slabs, white
+concrete stairs/slabs, white cushion, straw bed) were verified against the
+official `spigot-api:26.3-R0.1-SNAPSHOT` jar:
+- Every material name exists in the 26.3 `Material` enum.
+- However, MockBukkit has not yet released a `v26.3` build (the test suite
+  runs against `mockbukkit-v26.2:4.117.0` with `paper-api:26.2.build.133-stable`).
+- Because Bukkit enums are loaded during class initialization, uncommenting
+  any 26.3 `Material` causes `NoSuchFieldError` in the MockBukkit test suite.
+- As with 26.2 previously, the 26.3 items remain commented out in `Prizes.java`
+  purely to keep the test suite passing until `mockbukkit-v26.3` is published.
 
-Deliberately excluded from that block: Abandoned Camp / structure treasure
-maps (`FILLED_MAP` instances with embedded location data, not plain
-obtainable Materials — same reason ordinary maps were never in this list).
-
-**Do not uncomment any of it** until: a real 26.3 `spigot-api` build exists,
-every name is re-verified against that real jar (same process as "Prize
-list content update for 26.2" above), and `prizeLimits` entries are chosen
-for anything that should be capped. Also worth a call at that point on
-whether `STRAW_BED` (a one-time-use throwaway item) fits this list's
-spirit — ordinary colored beds were never added here either, which reads
-like a deliberate exclusion rather than an oversight.
+Deliberately excluded: Abandoned Camp / structure treasure maps (`FILLED_MAP`
+instances with embedded location data, not plain obtainable Materials).
 
 ## Loose ends / things to check if working on this again
 
-- The sulfur/cinnabar materials and `MUSIC_DISC_BOUNCE` were restored and uncommented once MockBukkit updated to `mockbukkit-v26.2:4.117.0` (with `paper-api:26.2.build.133-stable`).
-- The whole 26.3 block (search for "Speculative: Minecraft 26.3") is
-  unverified guesswork pending a real 26.3 API release — re-verify against
-  a real jar before uncommenting anything, per the section above.
-- This prize-list update is a first-pass curation (see caveat above) —
-  worth a proper in-game/gameplay review of what got included vs. excluded,
-  especially the "pick one representative color/variant" calls for bundles,
-  harnesses, and shelves.
+- The sulfur/cinnabar materials and `MUSIC_DISC_BOUNCE` were restored and uncommented once MockBukkit updated to `mockbukkit-v26.2:4.117.0`.
+- The 26.3 materials in `Prizes.java` are verified against Spigot 26.3 but deferred pending `mockbukkit-v26.3`. Once released, bump MockBukkit and uncomment them. Also decide whether `STRAW_BED` belongs in the pool and assign `prizeLimits`.
+- This prize-list update is a first-pass curation — worth a proper in-game/gameplay review of what got included vs. excluded, especially the "pick one representative color/variant" calls for bundles, harnesses, and shelves.
 - No `endEnchantableList` — enchanted End-realm prizes can't currently be
   generated even if `includeEnd` is true and an End material is drawn.
 - License headers reconciled to MIT across all source files (`Prizes.java`, `AfkEvent.java`) and root `LICENSE`.

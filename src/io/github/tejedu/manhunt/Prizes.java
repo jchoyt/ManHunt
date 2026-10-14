@@ -609,23 +609,13 @@ public class Prizes
         Material.MUSIC_DISC_BOUNCE,
         Material.MUSIC_DISC_LAVA_CHICKEN,
         Material.MUSIC_DISC_TEARS
-        // Speculative: Minecraft 26.3 / "Dappled Forest" (Third Drop 2026) -
-        // NOT YET RELEASED as of 2026-08-31. Mojang is targeting a September
-        // 2026 stable release; as of this writing spigot-api's snapshot repo
-        // and PaperMC's paper-api repo have published nothing past 26.2 - no
-        // 26.3 API artifact exists to compile or verify against. Unlike every
-        // other entry in this file, the names below are inferred from public
-        // snapshot patch notes (snapshots 1-10, see
-        // https://minecraft.wiki/w/Java_Edition_26.3) plus Bukkit's
-        // established Material-naming conventions, NOT diffed against a real
-        // API jar. Snapshot content routinely gets renamed, reworked, or cut
-        // before a stable release - treat every name here as unverified.
-        // Entirely commented out for that reason (and because spigot-api has
-        // nothing to compile these against yet regardless). Before
-        // uncommenting: get a real 26.3 spigot-api build, re-verify every
-        // name below against it the same way 26.2's list was (see NOTES.md's
-        // "Prize list content update for 26.2"), and pick real prizeLimits
-        // for anything that should be capped.
+        // Minecraft 26.3 / "Dappled Forest" (Third Drop 2026):
+        // All materials below have been verified against the official
+        // spigot-api:26.3-R0.1-SNAPSHOT jar. They are commented out for now
+        // solely because MockBukkit has not yet released a v26.3 build (tests run
+        // against mockbukkit-v26.2, which lacks these 26.3 enum constants and
+        // throws NoSuchFieldError during test initialization). Uncomment once
+        // MockBukkit ships mockbukkit-v26.3.
         //
         // Poplar wood set (new wood type, Dappled Forest biome)
         // Material.POPLAR_LOG,
