@@ -67,8 +67,10 @@ public class Game
             enchantableList.addAll(Prizes.netherEnchantableList);
             materialList.addAll(Prizes.netherPrizes);
         }
-        if (this.plugin.getConfig().getBoolean("prizes.includeEnd"))
+        if (this.plugin.getConfig().getBoolean("prizes.includeEnd")) {
+            enchantableList.addAll(Prizes.endEnchantableList);
             materialList.addAll(Prizes.endPrizes);
+        }
         fakePotions.add(PotionType.AWKWARD);
         fakePotions.add(PotionType.MUNDANE);
         fakePotions.add(PotionType.THICK);

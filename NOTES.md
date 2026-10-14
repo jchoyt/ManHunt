@@ -59,14 +59,14 @@ item prize.
 
 - `Prizes.java` is a big static data file: `overworldPrizes`,
   `overworldEnchantableList`, `netherPrizes`, `netherEnchantableList`,
-  `endPrizes` — `List<Material>` allow-lists (with most of Minecraft's
-  material list present but commented out — curated by hand), plus
+  `endPrizes`, `endEnchantableList` — `List<Material>` allow-lists (with most
+  of Minecraft's material list present but commented out — curated by hand), plus
   `prizeLimits: Map<Material,Integer>` capping stack sizes for rare items
   (e.g. nether stars, beacons, netherite) so no one gets 64 of something
   broken.
 - Config `prizes.includeOverworld/includeNether/includeEnd` toggles which
-  realm's prize pool is active (End material list exists but there's no
-  `endEnchantableList`, so enchanted End prizes aren't currently possible).
+  realm's prize pool is active (`endEnchantableList` contains `Material.ELYTRA`,
+  the only End-exclusive enchantable item).
 - `netherPrizes` has `Material.IRON_CHAIN` in place of the old `CHAIN`
   material, which Spigot 26.2 removed/renamed as part of a new copper-chain
   block family (see "Prize list content update for 26.2" below).
@@ -332,7 +332,6 @@ instances with embedded location data, not plain obtainable Materials).
 
 - The sulfur/cinnabar materials and `MUSIC_DISC_BOUNCE` were restored and uncommented once MockBukkit updated to `mockbukkit-v26.2:4.117.0`.
 - The 26.3 materials in `Prizes.java` are verified against Spigot 26.3 but deferred pending `mockbukkit-v26.3`. Once released, bump MockBukkit and uncomment them. Also decide whether `STRAW_BED` belongs in the pool and assign `prizeLimits`.
+- Added `endEnchantableList` with `Material.ELYTRA` (sole End-exclusive enchantable item in Minecraft) to `Prizes.java` and wired into `Game.loadPrizeLists()`.
 - This prize-list update is a first-pass curation — worth a proper in-game/gameplay review of what got included vs. excluded, especially the "pick one representative color/variant" calls for bundles, harnesses, and shelves.
-- No `endEnchantableList` — enchanted End-realm prizes can't currently be
-  generated even if `includeEnd` is true and an End material is drawn.
 - License headers reconciled to MIT across all source files (`Prizes.java`, `AfkEvent.java`) and root `LICENSE`.

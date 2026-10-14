@@ -49,13 +49,19 @@ class PrizesTest {
     }
 
     @Test
+    void endEnchantableListIsNotEmpty() {
+        assertFalse(Prizes.endEnchantableList.isEmpty());
+    }
+
+    @Test
     void noPrizeListsContainNulls() {
         for (List<Material> list : List.of(
                 Prizes.overworldPrizes,
                 Prizes.netherPrizes,
                 Prizes.endPrizes,
                 Prizes.overworldEnchantableList,
-                Prizes.netherEnchantableList)) {
+                Prizes.netherEnchantableList,
+                Prizes.endEnchantableList)) {
             assertFalse(list.contains(null));
         }
     }
@@ -73,7 +79,8 @@ class PrizesTest {
                 Prizes.netherPrizes,
                 Prizes.endPrizes,
                 Prizes.overworldEnchantableList,
-                Prizes.netherEnchantableList)) {
+                Prizes.netherEnchantableList,
+                Prizes.endEnchantableList)) {
             Set<Material> seen = new HashSet<>();
             for (Material material : list) {
                 if (material == Material.POTION) {

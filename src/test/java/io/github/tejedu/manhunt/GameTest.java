@@ -209,4 +209,25 @@ class GameTest {
 
         assertEquals("less than a minute", game.getTimeLeft());
     }
+
+    @Test
+    void includeEndPopulatesEndPrizesAndEnchantables() throws Exception {
+        plugin.getConfig().set("prizes.includeOverworld", false);
+        plugin.getConfig().set("prizes.includeNether", false);
+        plugin.getConfig().set("prizes.includeEnd", true);
+        plugin.getConfig().set("prizes.enchrate", -1);
+
+        Game game = new Game(plugin, false);
+
+        // Verify materialList drew an End prize
+        org.bukkit.inventory.ItemStack item = game.randomItemStack();
+        assertTrue(Prizes.endPrizes.contains(item.getType()));
+
+        // Verify enchantableList was populated with Prizes.endEnchantableList
+        java.lang.reflect.Field field = Game.class.getDeclaredField("enchantableList");
+        field.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        java.util.List<org.bukkit.Material> enchantables = (java.util.List<org.bukkit.Material>) field.get(game);
+        assertEquals(Prizes.endEnchantableList, enchantables);
+    }
 }

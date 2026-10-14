@@ -86,10 +86,10 @@ JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64 ./gradlew test
 - `src/io/github/tejedu/manhunt/ManHunt.java` — Plugin entry point, command dispatcher, game queueing, configuration loader.
 - `src/io/github/tejedu/manhunt/Game.java` — Core round lifecycle, target selection, prize creation, capture/survive resolution.
 - `src/io/github/tejedu/manhunt/CaptureListener.java` — Right-click capture listener and target quit listener.
-- `src/io/github/tejedu/manhunt/Prizes.java` — Static prize pools (`overworldPrizes`, `netherPrizes`, `endPrizes`, `overworldEnchantableList`, `netherEnchantableList`) and `prizeLimits` stack caps.
+- `src/io/github/tejedu/manhunt/Prizes.java` — Static prize pools (`overworldPrizes`, `netherPrizes`, `endPrizes`, `overworldEnchantableList`, `netherEnchantableList`, `endEnchantableList`) and `prizeLimits` stack caps.
 - `src/io/github/tejedu/manhunt/StartGameTimer.java` / `SurviveTimer.java` — `BukkitRunnable` delay timers.
 - `src/io/github/tejedu/manhunt/AfkEvent.java` — Custom Bukkit event fired when unverified target survives.
-- `src/test/java/io/github/tejedu/manhunt/` — MockBukkit test suite (41 tests): `GameTest`, `CaptureListenerTest`, `ManHuntTest`, `PrizesTest`, and helper `TestUtil`.
+- `src/test/java/io/github/tejedu/manhunt/` — MockBukkit test suite (43 tests): `GameTest`, `CaptureListenerTest`, `ManHuntTest`, `PrizesTest`, and helper `TestUtil`.
 
 ### Testing Quirks & Gotchas
 
@@ -111,8 +111,8 @@ JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64 ./gradlew test
 MockBukkit was updated to `mockbukkit-v26.2:4.117.0` and `paper-api:26.2.build.133-stable`. The sulfur/cinnabar materials (~29 items) and `MUSIC_DISC_BOUNCE` in `Prizes.java` have been uncommented and verified via unit tests.
 
 ### 3. Missing Realm Lists & Minor Cleanups
-- **End Realm**: `endPrizes` exists, but there is no `endEnchantableList`. If End prizes are enabled and an enchantable End item is drawn, enchanted variant generation is bypassed.
-- **Licenses**: Unified under MIT (headers in `Prizes.java` and `AfkEvent.java` reconciled with root `LICENSE`).
+- **End Realm (Completed)**: Added `endEnchantableList` with `Material.ELYTRA` (the sole End-exclusive enchantable item in Minecraft) to `Prizes.java` and wired it into `Game.loadPrizeLists()`.
+- **Licenses (Completed)**: Unified under MIT (headers in `Prizes.java` and `AfkEvent.java` reconciled with root `LICENSE`).
 
 ---
 

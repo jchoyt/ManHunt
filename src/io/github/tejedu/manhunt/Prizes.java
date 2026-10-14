@@ -856,6 +856,10 @@ public class Prizes
         Material.NETHERITE_SWORD
     );
 
+    public static List<Material> endEnchantableList = (List<Material>)Arrays.asList(
+        Material.ELYTRA
+    );
+
     public static Map<Material, Integer> prizeLimits = new HashMap<Material, Integer>();
 
     /**
