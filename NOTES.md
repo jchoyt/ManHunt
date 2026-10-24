@@ -310,20 +310,19 @@ first-pass draft for review, not a final call.
 
 ## Spigot 26.3 upgrade & prize entries (2026-10)
 
-Updated project to Spigot API 26.3 (`org.spigotmc:spigot-api:26.3-R0.1-SNAPSHOT`)
-and bumped plugin version to `26.3.0`.
+Updated project to Spigot API 26.3 (`org.spigotmc:spigot-api:26.3-R0.1-SNAPSHOT`),
+bumped plugin version to `26.3.0`, and updated MockBukkit to
+`mockbukkit-v26.3:4.118.0` (`paper-api:26.3.build.200-stable`).
 
-All 26.3 materials in the commented-out block at the end of `overworldPrizes`
-(poplar wood set, red shrub, shelf mushroom, cyan wool stairs/slabs, white
-concrete stairs/slabs, white cushion, straw bed) were verified against the
-official `spigot-api:26.3-R0.1-SNAPSHOT` jar:
-- Every material name exists in the 26.3 `Material` enum.
-- However, MockBukkit has not yet released a `v26.3` build (the test suite
-  runs against `mockbukkit-v26.2:4.117.0` with `paper-api:26.2.build.133-stable`).
-- Because Bukkit enums are loaded during class initialization, uncommenting
-  any 26.3 `Material` causes `NoSuchFieldError` in the MockBukkit test suite.
-- As with 26.2 previously, the 26.3 items remain commented out in `Prizes.java`
-  purely to keep the test suite passing until `mockbukkit-v26.3` is published.
+Enabled 26.3 materials in `overworldPrizes`:
+- Poplar wood set matching the Cherry / Pale Oak pattern (`POPLAR_LOG`,
+  `POPLAR_PLANKS`, `POPLAR_SHELF`, `POPLAR_SAPLING`, `RED_POPLAR_LEAVES`,
+  `ORANGE_POPLAR_LEAVES`, `YELLOW_POPLAR_LEAVES`).
+- Dappled Forest flora (`RED_SHRUB`, `SHELF_MUSHROOM`).
+- Representative colored stairs/slabs/cushions (`CYAN_WOOL_STAIRS`,
+  `CYAN_WOOL_SLAB`, `WHITE_CONCRETE_STAIRS`, `WHITE_CONCRETE_SLAB`,
+  `WHITE_CUSHION`).
+- Beds: `STRAW_BED` and `CYAN_BED`.
 
 Deliberately excluded: Abandoned Camp / structure treasure maps (`FILLED_MAP`
 instances with embedded location data, not plain obtainable Materials).
@@ -331,7 +330,7 @@ instances with embedded location data, not plain obtainable Materials).
 ## Loose ends / things to check if working on this again
 
 - The sulfur/cinnabar materials and `MUSIC_DISC_BOUNCE` were restored and uncommented once MockBukkit updated to `mockbukkit-v26.2:4.117.0`.
-- The 26.3 materials in `Prizes.java` are verified against Spigot 26.3 but deferred pending `mockbukkit-v26.3`. Once released, bump MockBukkit and uncomment them. Also decide whether `STRAW_BED` belongs in the pool and assign `prizeLimits`.
+- The 26.3 materials in `Prizes.java` are now active and verified against `spigot-api:26.3-R0.1-SNAPSHOT` and `mockbukkit-v26.3:4.118.0`.
 - Added `endEnchantableList` with `Material.ELYTRA` (sole End-exclusive enchantable item in Minecraft) to `Prizes.java` and wired into `Game.loadPrizeLists()`.
 - This prize-list update is a first-pass curation — worth a proper in-game/gameplay review of what got included vs. excluded, especially the "pick one representative color/variant" calls for bundles, harnesses, and shelves.
 - License headers reconciled to MIT across all source files (`Prizes.java`, `AfkEvent.java`) and root `LICENSE`.

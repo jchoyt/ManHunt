@@ -608,21 +608,15 @@ public class Prizes
         Material.MUSIC_DISC_BLOCKS,
         Material.MUSIC_DISC_BOUNCE,
         Material.MUSIC_DISC_LAVA_CHICKEN,
-        Material.MUSIC_DISC_TEARS
-        // Minecraft 26.3 / "Dappled Forest" (Third Drop 2026):
-        // All materials below have been verified against the official
-        // spigot-api:26.3-R0.1-SNAPSHOT jar. They are commented out for now
-        // solely because MockBukkit has not yet released a v26.3 build (tests run
-        // against mockbukkit-v26.2, which lacks these 26.3 enum constants and
-        // throws NoSuchFieldError during test initialization). Uncomment once
-        // MockBukkit ships mockbukkit-v26.3.
-        //
-        // Poplar wood set (new wood type, Dappled Forest biome)
-        // Material.POPLAR_LOG,
+        Material.MUSIC_DISC_TEARS,
+        // Minecraft 26.3 / "Dappled Forest" (Third Drop 2026)
+        // Poplar wood set (new wood type, Dappled Forest biome) - matching
+        // the CHERRY and PALE_OAK pattern above
+        Material.POPLAR_LOG,
         // Material.STRIPPED_POPLAR_LOG,
         // Material.POPLAR_WOOD,
         // Material.STRIPPED_POPLAR_WOOD,
-        // Material.POPLAR_PLANKS,
+        Material.POPLAR_PLANKS,
         // Material.POPLAR_STAIRS,
         // Material.POPLAR_SLAB,
         // Material.POPLAR_SIGN,
@@ -633,39 +627,34 @@ public class Prizes
         // Material.POPLAR_FENCE,
         // Material.POPLAR_FENCE_GATE,
         // Material.POPLAR_TRAPDOOR,
-        // Material.POPLAR_SHELF, // matches the OAK_SHELF/CHERRY_SHELF furniture precedent above
+        Material.POPLAR_SHELF, // matches the OAK_SHELF/CHERRY_SHELF furniture precedent above
         // Material.POPLAR_BOAT,
         // Material.POPLAR_CHEST_BOAT,
-        // Material.POPLAR_SAPLING,
-        // Material.RED_POPLAR_LEAVES,
-        // Material.ORANGE_POPLAR_LEAVES,
-        // Material.YELLOW_POPLAR_LEAVES,
-        // Dappled Forest flora - naming is a guess; "shelf mushroom" in
-        // particular may turn out to be scenery baked into poplar tree
-        // generation rather than a standalone obtainable item, in which case
-        // it has no Material at all
-        // Material.RED_SHRUB,
-        // Material.SHELF_MUSHROOM,
+        Material.POPLAR_SAPLING,
+        Material.RED_POPLAR_LEAVES,
+        Material.ORANGE_POPLAR_LEAVES,
+        Material.YELLOW_POPLAR_LEAVES,
+        // Dappled Forest flora
+        Material.RED_SHRUB,
+        Material.SHELF_MUSHROOM,
         // Wool stairs/slabs (16 colors each) - one representative color
         // active, matching the CYAN_WOOL treatment earlier in this list; the
         // other 15 of each are omitted rather than individually listed
-        // Material.CYAN_WOOL_STAIRS,
-        // Material.CYAN_WOOL_SLAB,
+        Material.CYAN_WOOL_STAIRS,
+        Material.CYAN_WOOL_SLAB,
         // Concrete stairs/slabs (16 colors each) - same one-representative-
         // color approach, matching the WHITE_BUNDLE/WHITE_HARNESS treatment
         // above; note plain CONCRETE itself was never in this list to begin
         // with (an existing gap, not something introduced by 26.3)
-        // Material.WHITE_CONCRETE_STAIRS,
-        // Material.WHITE_CONCRETE_SLAB,
+        Material.WHITE_CONCRETE_STAIRS,
+        Material.WHITE_CONCRETE_SLAB,
         // Cushions (16 colors, sit-on furniture) - one representative color,
         // same reasoning as above
-        // Material.WHITE_CUSHION,
-        // Straw Bed - single-use, destroyed after sleeping, can't be used in
-        // the Nether/End. New standalone item; note ordinary colored beds
-        // aren't in this list at all (an existing, apparently deliberate
-        // exclusion) - worth deciding whether a one-time throwaway item fits
-        // this list's spirit before enabling it
-        // Material.STRAW_BED,
+        Material.WHITE_CUSHION,
+        // Beds - Straw Bed (26.3 single-use bed) and Cyan Bed (representative
+        // colored bed, matching CYAN_WOOL)
+        Material.STRAW_BED,
+        Material.CYAN_BED
         // Deliberately excluded: Abandoned Camp / structure treasure maps
         // (Buried Ancient City, Buried Mineshaft, Desert Pyramid, Warm Ocean
         // Ruins, etc.) - these are FILLED_MAP instances with embedded

@@ -45,9 +45,9 @@ JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64 ./gradlew test
 
 ## Versioning & Dependencies
 
-- **Single Source of Truth for Version**: `plugin.yml`'s `version:` field is the source of truth (`version: 26.2.0`). `build.gradle` parses it dynamically with regex. To bump the version, edit `plugin.yml` only.
-- **Spigot API**: `org.spigotmc:spigot-api:26.2-R0.1-SNAPSHOT` configured as `compileOnly` from `https://hub.spigotmc.org/nexus/content/repositories/snapshots/`.
-- **MockBukkit Test Framework**: Pinned to `org.mockbukkit.mockbukkit:mockbukkit-v26.1.2:4.115.0` with explicit `io.papermc.paper:paper-api:26.1.2.build.72-stable` dependency from `https://repo.papermc.io/repository/maven-public/`.
+- **Single Source of Truth for Version**: `plugin.yml`'s `version:` field is the source of truth (`version: 26.3.0`). `build.gradle` parses it dynamically with regex. To bump the version, edit `plugin.yml` only.
+- **Spigot API**: `org.spigotmc:spigot-api:26.3-R0.1-SNAPSHOT` configured as `compileOnly` from `https://hub.spigotmc.org/nexus/content/repositories/snapshots/`.
+- **MockBukkit Test Framework**: Pinned to `org.mockbukkit.mockbukkit:mockbukkit-v26.3:4.118.0` with explicit `io.papermc.paper:paper-api:26.3.build.200-stable` dependency from `https://repo.papermc.io/repository/maven-public/`.
 - **CI**: `.github/workflows/ci.yml` runs `./gradlew build` on JDK 25 (Temurin) on pushes and pull requests to `master`.
 
 ---
@@ -103,9 +103,8 @@ JAVA_HOME=/usr/lib/jvm/java-25-openjdk-amd64 ./gradlew test
 ### 1. Minecraft/Spigot 26.3 Update ("Dappled Forest") (Completed)
 - `spigot-api:26.3-R0.1-SNAPSHOT` configured in `build.gradle`.
 - `version: 26.3.0` and `api-version: 26.3` updated in `plugin.yml`.
-- All 26.3 materials (poplar set, red shrub, shelf mushroom, wool/concrete stairs/slabs, cushions, straw bed) verified against official `spigot-api:26.3-R0.1-SNAPSHOT` jar.
-- Materials remain commented out in `Prizes.java` until MockBukkit releases `mockbukkit-v26.3` (running with `mockbukkit-v26.2` throws `NoSuchFieldError` on missing enum constants).
-- Open question remaining for when MockBukkit 26.3 arrives: whether `STRAW_BED` (single-use item) belongs in the prize pool (colored beds were historically excluded) and assigning `prizeLimits`.
+- MockBukkit updated to `mockbukkit-v26.3:4.118.0` with `paper-api:26.3.build.200-stable`.
+- 26.3 materials enabled in `Prizes.java`: poplar wood set (matching cherry/pale oak curation: log, planks, shelf, sapling, and 3 leaf colors), red shrub, shelf mushroom, cyan wool stairs/slabs, white concrete stairs/slabs, white cushion, straw bed, and cyan bed.
 
 ### 2. 26.2 Deferred Materials (Completed)
 MockBukkit was updated to `mockbukkit-v26.2:4.117.0` and `paper-api:26.2.build.133-stable`. The sulfur/cinnabar materials (~29 items) and `MUSIC_DISC_BOUNCE` in `Prizes.java` have been uncommented and verified via unit tests.

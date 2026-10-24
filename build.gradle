@@ -74,13 +74,13 @@ dependencies {
     // without a real Minecraft server. It only provides the mock
     // implementations (ServerMock, PlayerMock, ...); the actual org.bukkit
     // API interfaces come from a separately-declared paper-api matching its
-    // pin, below. Pinned to v26.2 matching Spigot 26.2.
-    testImplementation 'org.mockbukkit.mockbukkit:mockbukkit-v26.2:4.117.0'
+    // pin, below. Pinned to v26.3 matching Spigot 26.3.
+    testImplementation 'org.mockbukkit.mockbukkit:mockbukkit-v26.3:4.118.0'
     // Paper switched to a <mcversion>.build.<N>-<stability> version scheme
     // (no more -R0.1-SNAPSHOT) - this exact build is what the MockBukkit jar
     // above is built against (check its META-INF/MANIFEST.MF Paper-Version
     // attribute if bumping either dependency).
-    testImplementation 'io.papermc.paper:paper-api:26.2.build.133-stable'
+    testImplementation 'io.papermc.paper:paper-api:26.3.build.200-stable'
     testImplementation platform('org.junit:junit-bom:5.11.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
